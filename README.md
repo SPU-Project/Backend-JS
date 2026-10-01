@@ -643,6 +643,11 @@ npx husky init
 
 ```
 .
+├── .github/
+│   ├── ISSUE_TEMPLATE/
+│   │   ├── bug_report.md              # Structured bug report template
+│   │   └── feature_request.md         # Feature request template
+│   └── PULL_REQUEST_TEMPLATE.md       # PR checklist template
 ├── __test__/                          # Unit tests (Mocha + assert)
 │   ├── AdminController.test.mjs       # Auth controller tests
 │   ├── BahanBakuController.test.mjs   # Raw material controller tests
@@ -677,7 +682,9 @@ npx husky init
 ├── .env.example                       # Environment variable template
 ├── .gitignore                         # node_modules, .env, .DS_Store
 ├── docker-compose.yml                 # PostgreSQL dev/test containers
+├── LICENSE                            # ISC License
 ├── Makefile                           # Workflow automation targets
+├── SECURITY.md                        # Vulnerability disclosure policy
 ├── index.js                           # Application entry point
 ├── package.json                       # Dependencies + scripts
 └── README.md                          # ← You are here
