@@ -716,6 +716,101 @@
       ]
     },
     {
+      "name": "Piutang Tempo & Aging Report (Sprint 5)",
+      "description": "Manajemen Piutang Petani (Yarnen / Kasbon Panen): Pelunasan Cicilan, Pemulihan Plafon Kredit Petani secara ACID, dan Laporan AR Aging 0-30, 31-60, 61-90, >90 Hari.",
+      "item": [
+        {
+          "name": "1. Daftar Piutang Kasbon Petani",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/api/v1/receivables",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "receivables"
+              ]
+            },
+            "description": "Menampilkan daftar seluruh piutang yang beredar di seluruh cabang dengan status unpaid, partially_paid, atau paid."
+          }
+        },
+        {
+          "name": "2. Detail Piutang & Riwayat Cicilan",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/api/v1/receivables/1",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "receivables",
+                "1"
+              ]
+            },
+            "description": "Melihat rincian tagihan faktur tempo, nama petani, poktan, dan jejak pembayaran cicilan sebelumnya."
+          }
+        },
+        {
+          "name": "3. Bayar Cicilan / Pelunasan Panen (ACID)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 200000,\n  \"method\": \"cash\",\n  \"notes\": \"Pembayaran cicilan panen jagung awal\"\n}"
+            },
+            "url": {
+              "raw": "{{url}}/api/v1/receivables/1/payments",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "receivables",
+                "1",
+                "payments"
+              ]
+            },
+            "description": "Mencatat pembayaran cicilan kasbon. Secara otomatis memotong sisa tagihan piutang dan mengembalikan plafon kredit petani agar dapat berbelanja kembali."
+          }
+        },
+        {
+          "name": "4. Laporan Aging Piutang (AR Aging Report)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/api/v1/receivables/aging-report",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "receivables",
+                "aging-report"
+              ]
+            },
+            "description": "Menganalisis profil risiko piutang berdasarkan umur tagihan: 0-30 hari (periode tanam awal), 31-60 hari, 61-90 hari (menjelang panen), dan >90 hari (risiko gagal panen/kredit macet)."
+          }
+        }
+      ]
+    },
+    {
       "name": "User CRUD",
       "item": [
         {
