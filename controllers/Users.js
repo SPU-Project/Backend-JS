@@ -81,6 +81,13 @@ const createUser = async (req, res) => {
 
     res.status(201).json({
       msg: "Registration successful",
+      data: {
+        id,
+        uuid,
+        email: userEmail,
+        username: userUsername,
+        role: userRole,
+      },
       user: {
         id,
         uuid,

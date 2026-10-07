@@ -477,99 +477,128 @@ curl -X GET http://localhost:5000/produkdetails/1 \
 
 ## Getting Started & Local Development
 
-### Prerequisites
+# Rencana Memulai & Menjalankan Project SPU Backend
 
-| Tool | Version | Purpose |
-|---|---|---|
-| **Node.js** | ≥ 18.x | ES Module support, runtime |
-| **npm** | ≥ 9.x | Dependency management |
-| **Docker & Docker Compose** | Latest | PostgreSQL provisioning (or install PostgreSQL natively) |
-| **Make** | Any | Workflow automation (pre-installed on macOS/Linux) |
+Dokumen ini berisi panduan dan rencana langkah demi langkah untuk mengonfigurasi, membuat database & tabel, serta menjalankan server REST API **SPU (Sukaraja Pangan Utama)** di mesin lokal Anda.
 
-### Quick Start (3 Commands)
+---
 
+## 1. Goal Description
+
+Menyiapkan lingkungan lokal untuk project backend SPU yang dibangun dengan Node.js (Express, ES Modules) dan PostgreSQL (Sequelize ORM), mulai dari:
+1. Pemasangan dependensi (`npm install`).
+2. Konfigurasi file environment [`.env`]
+3. Pembuatan database PostgreSQL lokal (`spudev`).
+4. Pembuatan tabel otomatis via Sequelize (`db.sync`).
+5. Menjalankan server development (`npm run start:dev` / `nodemon`).
+6. Verifikasi endpoint dasar (pembuatan user admin pertama & test login/query).
+
+---
+
+## 2. Proposed Steps
+
+### Step 2.1: Install Dependencies
+Jalankan instalasi modul Node.js yang dibutuhkan oleh project
 ```bash
-make setup      # Install deps + create .env from template
-make db-up      # Start PostgreSQL via Docker Compose
-make dev        # Start Express server on :5000 with auto-reload
+npm install
 ```
 
-### Step-by-Step Setup
-
-#### 1. Clone the Repository
-
+### Step 2.2: Konfigurasi File `.env`
+Salin template [`.env.example`] menjadi `.env` dan sesuaikan nilainya:
 ```bash
-git clone <repository-url>
-cd Untitled
+cp .env.example .env
 ```
-
-#### 2. Install Dependencies & Configure Environment
-
-```bash
-make setup
-```
-
-This runs `npm install` and copies `.env.example` → `.env` if the file doesn't exist yet. Then edit `.env` with your credentials:
-
+Isi konfigurasi pada [`.env`]:
 ```env
 # General
 APP_PORT=5000
-SESS_SECRET=your-strong-random-secret-here
+SESS_SECRET=spu_secret_session_key_2026
+JWT_SECRET=spu_jwt_secret_key_2026
 
-# Development Database
-PGUSER_DEV=postgres
-PGPASSWORD_DEV=postgres
-PGDATABASE_DEV=spuofficial
+# Development Database (Local Homebrew PostgreSQL)
+PGUSER_DEV= ##cek whoami
+PGPASSWORD_DEV=
+PGDATABASE_DEV=spudev
 PGHOST_DEV=localhost
-PGPORT_DEV=5432
+PGPORT_DEV= #psql -d postgres -c "SHOW port;" (CEK DULU PORTNYA)
 PGDIALECT_DEV=postgres
+
 ```
 
-#### 3. Start PostgreSQL
-
-**Option A — Docker Compose (recommended):**
+### Step 3: Membuat Database PostgreSQL
+Buat database bernama `spudev` menggunakan utilitas PostgreSQL lokal:
 ```bash
-make db-up
+createdb spudev
 ```
+*(Opsional untuk keperluan test suite: `createdb spu_test`)*
 
-This starts a `postgres:16-alpine` container with automatic health checking. The database `spuofficial` is created automatically.
+### Step 4: Membuat Tabel (Sequelize Auto-Sync)
+Project SPU didesain dengan mekanisme sinkronisasi model otomatis di [index.js]:
+- `AdminModel` (tabel `admins`)
+- `BahanBakuModel` (tabel `bahan_bakus`)
+- `ProdukModel` (tabel `produks`)
+- `ProdukBahanBakuModel` (tabel `produk_bahan_bakus`)
+- `OverheadModel` (tabel `overheads`)
+- `KemasanModel` (tabel `kemasans`)
+- `store.sync()` (tabel `Sessions`)
 
-**Option B — Native PostgreSQL:**
+Semua tabel akan otomatis dibuat saat server dijalankan pertama kali berkat fungsi `db.sync({ alter: true })`.
+
+### Step 5: Menjalankan Server
+Jalankan server dalam mode development:
 ```bash
-createdb spuofficial
-createdb spuofficial_test    # optional, for tests
+npm run start:dev
+```
+Server akan berjalan di `http://localhost:3000` dengan auto-reload via `nodemon`.
+
+Log yang diharapkan muncul di console:
+```text
+Database connected...
+All models were synchronized successfully.
+Database synced...
+Server up and running...
 ```
 
-#### 4. Start the Development Server
-
+### Step 6: Inisialisasi Akun Admin Pertama (Untuk Bedah Codebase)
+Karena database masih kosong, buat akun admin perdana melalui route `POST /users`:
 ```bash
-make dev
+curl -X POST http://localhost:5000/users \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "admin@spu.co.id",
+    "username": "admin",
+    "password": "Password123!",
+    "confPassword": "Password123!"
+  }'
 ```
 
-The server starts on `http://localhost:5000` with auto-reload via Nodemon. Sequelize auto-syncs all table schemas on startup.
+---
 
-#### 5. Verify the Server
+## 5. Verification Plan
 
+### Automated Tests
+Jalankan pengujian unit controller yang sudah tersedia di [__test__/]:
 ```bash
-curl -s http://localhost:5000/bahanbaku
-# Expected: {"message":"Daftar Bahan Baku","data":[]}
+npm run start:test
 ```
 
-### Available Make Targets
-
-Run `make help` to see all available commands:
-
-| Target | Command | Description |
-|---|---|---|
-| `setup` | `make setup` | Install dependencies + create `.env` |
-| `db-up` | `make db-up` | Start dev PostgreSQL via Docker |
-| `db-down` | `make db-down` | Stop database containers |
-| `db-test-up` | `make db-test-up` | Start test PostgreSQL (port 5433) |
-| `dev` | `make dev` | Start dev server (Nodemon) |
-| `prod` | `make prod` | Start production server |
-| `test` | `make test` | Run Mocha test suite |
-| `lint` | `make lint` | Run ESLint |
-| `clean` | `make clean` | Remove node_modules + Docker volumes |
+### Manual Verification
+1. **Periksa Database & Tabel**:
+   ```bash
+   psql -d spudev -c "\dt"
+   ```
+   Pastikan tabel `admins`, `bahan_bakus`, `produks`, `produk_bahan_bakus`, `overheads`, `kemasans`, dan `Sessions` telah tercipta.
+2. **Uji Login & Session**:
+   ```bash
+   curl -c cookies.txt -X POST http://localhost:5000/login \
+     -H "Content-Type: application/json" \
+     -d '{"email":"admin@spu.co.id","password":"Password123!"}'
+   ```
+3. **Uji Protected Endpoint (Bahan Baku)**:
+   ```bash
+   curl -b cookies.txt http://localhost:5000/bahanbaku
+   ```
+   Ekspektasi: Response status `200 OK` dengan payload JSON `{"message":"Daftar Bahan Baku","data":[]}`.
 
 ### Available npm Scripts
 
