@@ -590,6 +590,132 @@
       ]
     },
     {
+      "name": "POS Checkout Core (Sprint 4)",
+      "description": "Modul Checkout Kasir ACID: Alokasi Batch FEFO Otomatis, Multi-Metode Pembayaran (Cash, QRIS, Tempo/Yarnen), Header Idempotency-Key anti-dobel transaksi, dan Validasi Plafon Kredit Petani.",
+      "item": [
+        {
+          "name": "1. Checkout Tunai (FEFO Auto-Allocation)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "idem-cash-001"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"storeId\": 2,\n  \"items\": [\n    {\n      \"productId\": 1,\n      \"qty\": 5\n    }\n  ],\n  \"discount\": 0,\n  \"payments\": [\n    {\n      \"method\": \"cash\",\n      \"amount\": 190000\n    }\n  ],\n  \"notes\": \"Penjualan tunai kasir\"\n}"
+            },
+            "url": {
+              "raw": "{{url}}/api/v1/pos/checkout",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "pos",
+                "checkout"
+              ]
+            },
+            "description": "Transaksi kasir standar. Mengambil harga resmi cabang, mengalokasikan batch terdekat expired lebih dulu, dan memotong stok fisik secara instan."
+          }
+        },
+        {
+          "name": "2. Checkout Split Payment (Cash + QRIS)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "idem-split-002"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"storeId\": 2,\n  \"items\": [\n    {\n      \"productId\": 1,\n      \"qty\": 10\n    }\n  ],\n  \"discount\": 10000,\n  \"payments\": [\n    {\n      \"method\": \"cash\",\n      \"amount\": 200000\n    },\n    {\n      \"method\": \"qris\",\n      \"amount\": 170000,\n      \"referenceNumber\": \"QRIS-NMD-89211\"\n    }\n  ],\n  \"notes\": \"Pembayaran terbagi tunai dan non-tunai\"\n}"
+            },
+            "url": {
+              "raw": "{{url}}/api/v1/pos/checkout",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "pos",
+                "checkout"
+              ]
+            },
+            "description": "Mendukung pembayaran multi-metode sekaligus dalam satu transaksi."
+          }
+        },
+        {
+          "name": "3. Checkout Tempo / Yarnen (Plafon Kasbon Petani)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "idem-tempo-003"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"storeId\": 2,\n  \"customerId\": 1,\n  \"items\": [\n    {\n      \"productId\": 1,\n      \"qty\": 15\n    }\n  ],\n  \"discount\": 0,\n  \"payments\": [\n    {\n      \"method\": \"cash\",\n      \"amount\": 100000\n    },\n    {\n      \"method\": \"tempo\",\n      \"amount\": 470000\n    }\n  ],\n  \"tempoDueDate\": \"2026-11-30\",\n  \"notes\": \"Pak Subur kasbon obat dan benih bayar panen\"\n}"
+            },
+            "url": {
+              "raw": "{{url}}/api/v1/pos/checkout",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "pos",
+                "checkout"
+              ]
+            },
+            "description": "Pembelian kasbon/yarnen: Memvalidasi sisa limit kredit petani, menaikkan piutang berjalan, dan otomatis menerbitkan record piutang (Receivable)."
+          }
+        },
+        {
+          "name": "4. Struk & Detail Transaksi POS",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/api/v1/pos/transactions/1",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "pos",
+                "transactions",
+                "1"
+              ]
+            },
+            "description": "Mengambil data lengkap transaksi, rincian nomor batch yang terpotong, metode pembayaran, dan status piutang."
+          }
+        }
+      ]
+    },
+    {
       "name": "User CRUD",
       "item": [
         {
