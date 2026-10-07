@@ -12,6 +12,7 @@ router.post("/stores", StoreController.createStore);
 router.get("/stores", StoreController.listStores);
 router.get("/stores/:storeId/stocks", StoreController.getStocks);
 router.post("/stores/prices", StoreController.setPrice);
+router.get("/stores/:storeId/products/:productId/price", StoreController.getPrice);
 router.post("/stores/transfers", StoreController.transferStock);
 
 // Customer / CRM endpoints

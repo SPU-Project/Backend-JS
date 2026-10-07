@@ -9,6 +9,7 @@ import {
 } from "./pos.models";
 import { Store, Customer, StoreStock } from "../stores/stores.models";
 import { ProductBatch } from "../production/production.models";
+import { cacheService } from "../../shared/cache/cache.service";
 
 const ProdukModel = require("../../../models/ProdukModel");
 
@@ -262,6 +263,12 @@ export class PosService {
         },
       };
     });
+
+    if (payload.customerId) {
+      await cacheService.del(`customer:${payload.customerId}`);
+    }
+
+    return result;
   }
 
   /**

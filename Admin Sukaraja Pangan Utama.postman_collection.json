@@ -811,6 +811,133 @@
       ]
     },
     {
+      "name": "Database Optimization & Redis Caching (Sprint 6)",
+      "description": "Optimasi Database & Performa Tinggi: Compound Index PostgreSQL (B-Tree), Caching Layer Redis / In-Memory (Cache-Aside pattern), Auto Cache Invalidation, dan Live EXPLAIN (ANALYZE, BUFFERS) Benchmarking.",
+      "item": [
+        {
+          "name": "1. Ambil Harga Produk Cabang (Cache-Aside Pattern)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/api/v1/stores/1/products/1/price",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "stores",
+                "1",
+                "products",
+                "1",
+                "price"
+              ]
+            },
+            "description": "Panggilan pertama membaca DB dan menyimpannya di Redis (fromCache: false). Panggilan berikutnya dilayani langsung dari Redis cache (fromCache: true) dalam hitungan sub-millisecond untuk memangkas p95 latency checkout kasir."
+          }
+        },
+        {
+          "name": "2. Update Harga Cabang (Cache Invalidation)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"storeId\": 1,\n  \"productId\": 1,\n  \"sellingPrice\": 18500\n}"
+            },
+            "url": {
+              "raw": "{{url}}/api/v1/stores/prices",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "stores",
+                "prices"
+              ]
+            },
+            "description": "Memperbarui harga jual gerai dan secara otomatis menghapus key cache Redis (Cache Invalidation) agar transaksi kasir berikutnya mendapatkan harga teranyar secara konsisten."
+          }
+        },
+        {
+          "name": "3. Cache Statistics & Engine Status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/api/v1/cache/stats",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "cache",
+                "stats"
+              ]
+            },
+            "description": "Memeriksa status driver cache aktif (redis / fallback memory in-process), status koneksi real-time, dan total keys tersimpan."
+          }
+        },
+        {
+          "name": "4. Flush Cache Aplikasi",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/api/v1/cache/flush",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "cache",
+                "flush"
+              ]
+            },
+            "description": "Mengosongkan seluruh namespace cache aplikasi saat maintenance atau sinkronisasi data massal."
+          }
+        },
+        {
+          "name": "5. EXPLAIN ANALYZE Benchmark Query POS",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"template\": \"fefo_stock_lookup\",\n  \"storeId\": 1,\n  \"productId\": 1\n}"
+            },
+            "url": {
+              "raw": "{{url}}/api/v1/performance/explain",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "performance",
+                "explain"
+              ]
+            },
+            "description": "Menjalankan EXPLAIN (ANALYZE, BUFFERS) PostgreSQL live untuk membuktikan bahwa query kasir menggunakan B-Tree Index Scan / Index Only Scan dengan execution time sub-millisecond dan zero Seq Scan."
+          }
+        }
+      ]
+    },
+    {
       "name": "User CRUD",
       "item": [
         {

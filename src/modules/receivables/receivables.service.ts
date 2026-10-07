@@ -4,6 +4,7 @@ import { withTransaction } from "../../shared/db/withTransaction";
 import { Receivable, ReceivablePayment } from "./receivables.models";
 import { Customer } from "../stores/stores.models";
 import { PosTransaction } from "../pos/pos.models";
+import { cacheService } from "../../shared/cache/cache.service";
 
 export class ReceivablesService {
   private static generatePaymentCode(): string {
@@ -149,6 +150,11 @@ export class ReceivablesService {
           : null,
       };
     });
+
+    // Invalidate cached customer profile
+    await cacheService.del(`customer:${receivable.customer_id}`);
+
+    return result;
   }
 
   /**

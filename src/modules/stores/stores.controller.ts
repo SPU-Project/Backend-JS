@@ -69,4 +69,11 @@ export class StoreController {
     const result = await StoreService.transferStock(validated, userId);
     return sendSuccess(res, result, 200);
   });
+
+  static getPrice = asyncHandler(async (req: Request, res: Response) => {
+    const storeId = parseInt(req.params.storeId, 10);
+    const productId = parseInt(req.params.productId, 10);
+    const result = await StoreService.getProductPrice(storeId, productId);
+    return sendSuccess(res, result, 200);
+  });
 }

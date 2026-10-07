@@ -116,10 +116,12 @@ import { productionRouter } from "./modules/production/production.routes";
 import { storeRouter } from "./modules/stores/stores.routes";
 import { posRouter } from "./modules/pos/pos.routes";
 import { receivablesRouter } from "./modules/receivables/receivables.routes";
+import { performanceRouter } from "./modules/performance/performance.routes";
 app.use("/api/v1/production", productionRouter);
 app.use("/api/v1", storeRouter);
 app.use("/api/v1/pos", posRouter);
 app.use("/api/v1/receivables", receivablesRouter);
+app.use("/api/v1", performanceRouter);
 
 // 404 Handler
 app.use((req: Request, res: Response, next) => {

@@ -9,6 +9,7 @@ import {
   StockTransferItem,
 } from "./stores.models";
 import { ProductBatch } from "../production/production.models";
+import { cacheService } from "../../shared/cache/cache.service";
 
 const ProdukModel = require("../../../models/ProdukModel");
 
@@ -95,24 +96,37 @@ export class StoreService {
   }
 
   /**
-   * Get single customer with credit status
+   * Get single customer with credit status (Cache-Aside pattern)
    */
   static async getCustomerById(id: number) {
+    const cacheKey = `customer:${id}`;
+    const cached = await cacheService.get<{ customer: any; availableCredit: number }>(cacheKey);
+    if (cached) {
+      return { ...cached, fromCache: true };
+    }
+
     const customer = await Customer.findByPk(id);
     if (!customer) {
       throw AppError.notFound(`Pelanggan dengan ID ${id} tidak ditemukan.`);
     }
 
     const availableCredit = Number(customer.credit_limit) - Number(customer.current_credit);
+    const result = {
+      customer: customer.toJSON ? customer.toJSON() : customer,
+      availableCredit: Math.max(0, availableCredit),
+    };
+
+    // Cache customer profile for 60 seconds
+    await cacheService.set(cacheKey, result, 60);
 
     return {
-      customer,
-      availableCredit: Math.max(0, availableCredit),
+      ...result,
+      fromCache: false,
     };
   }
 
   /**
-   * Update credit limit
+   * Update credit limit & invalidate cache
    */
   static async updateCreditLimit(id: number, creditLimit: number) {
     const customer = await Customer.findByPk(id);
@@ -121,11 +135,12 @@ export class StoreService {
     }
 
     await customer.update({ credit_limit: creditLimit });
+    await cacheService.del(`customer:${id}`);
     return customer;
   }
 
   /**
-   * Set selling price for store & product
+   * Set selling price for store & product & invalidate cache
    */
   static async setProductPrice(storeId: number, productId: number, sellingPrice: number) {
     const store = await Store.findByPk(storeId);
@@ -144,11 +159,60 @@ export class StoreService {
       { where: { store_id: storeId, product_id: productId } }
     );
 
+    // Invalidate cached price
+    await cacheService.del(`price:${storeId}:${productId}`);
+
     return {
       storeId,
       productId,
       sellingPrice,
       message: `Harga jual produk ${product.namaProduk} di cabang ${store.name} berhasil diperbarui.`,
+    };
+  }
+
+  /**
+   * Get store selling price with Cache-Aside pattern (p95 latency optimization)
+   */
+  static async getProductPrice(storeId: number, productId: number) {
+    const cacheKey = `price:${storeId}:${productId}`;
+    const cached = await cacheService.get<{ sellingPrice: number; productName: string }>(cacheKey);
+    if (cached) {
+      return {
+        storeId,
+        productId,
+        sellingPrice: cached.sellingPrice,
+        productName: cached.productName,
+        fromCache: true,
+      };
+    }
+
+    const store = await Store.findByPk(storeId);
+    if (!store) {
+      throw AppError.notFound(`Cabang ID ${storeId} tidak ditemukan.`);
+    }
+
+    const product = await ProdukModel.findByPk(productId);
+    if (!product) {
+      throw AppError.notFound(`Produk ID ${productId} tidak ditemukan.`);
+    }
+
+    const stock = await StoreStock.findOne({
+      where: { store_id: storeId, product_id: productId },
+      order: [["id", "DESC"]],
+    });
+
+    const sellingPrice = stock ? Number(stock.selling_price) : 0;
+    const result = { sellingPrice, productName: product.namaProduk };
+
+    // Cache selling price for 300 seconds (5 minutes)
+    await cacheService.set(cacheKey, result, 300);
+
+    return {
+      storeId,
+      productId,
+      sellingPrice,
+      productName: product.namaProduk,
+      fromCache: false,
     };
   }
 
