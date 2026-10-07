@@ -4,7 +4,8 @@ export default defineConfig({
   test: {
     globals: true,
     environment: "node",
-    include: ["__test__/**/*.test.js"],
+    include: ["__test__/**/*.test.{js,ts}"],
+    fileParallelism: false,
     testTimeout: 15000,
   },
 });
