@@ -5,8 +5,11 @@ const {
   getAllBahanBaku,
   deleteBahanBaku,
 } = require("../controllers/BahanBaku.js");
+const sessionChecker = require("../middleware/sessionChecker.js");
 
 const router = express.Router();
+
+router.use(sessionChecker);
 
 router.post("/bahanbaku", addBahanBaku);
 router.patch("/bahanbaku/:id", updateBahanBaku);

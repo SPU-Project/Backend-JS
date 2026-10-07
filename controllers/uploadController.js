@@ -1,42 +1,64 @@
-// controllers/uploadController.js
-
 const Admin = require("../models/AdminModel.js");
-const RiwayatLog = require("../models/RiwayatLog.js"); // Tambahkan ini
+const RiwayatLog = require("../models/RiwayatLog.js");
 const path = require("path");
-const fs = require("fs").promises; // Menggunakan fs dengan promises
+const fs = require("fs");
 
 const uploadProfileImage = async (req, res) => {
+  const userId = req.session ? req.session.userId : null;
+
+  if (!userId) {
+    return res.status(401).json({ message: "Anda belum login" });
+  }
+
+  // 1. Validasi apakah ada file yang dikirim
+  if (!req.file || !req.file.path) {
+    return res.status(400).json({ message: "Silakan pilih file gambar untuk diunggah" });
+  }
+
+  const newFilePath = req.file.path;
+
   try {
-    const userId = req.session.userId; // Mengambil userId dari session
-
-    if (!userId) {
-      return res.status(401).json({ message: "Anda belum login" });
-    }
-
-    const filePath = req.file.path;
-
     const admin = await Admin.findByPk(userId);
     if (!admin) {
+      if (fs.existsSync(newFilePath)) fs.unlinkSync(newFilePath);
       return res.status(404).json({ message: "Admin tidak ditemukan" });
     }
 
-    // Update field profileImage
-    admin.profileImage = filePath;
+    // 2. Hapus file gambar lama jika ada
+    if (admin.profileImage && fs.existsSync(admin.profileImage)) {
+      try {
+        fs.unlinkSync(admin.profileImage);
+      } catch (err) {
+        console.error("Gagal menghapus file gambar profil lama:", err.message);
+      }
+    }
+
+    // 3. Simpan path file baru
+    admin.profileImage = newFilePath;
     await admin.save();
 
-    // Simpan log ke RiwayatLog
-    await RiwayatLog.create({
-      username: admin.username,
-      role: admin.role,
-      description: `Mengunggah gambar profil`,
-    });
+    // 4. Catat riwayat
+    try {
+      await RiwayatLog.create({
+        username: admin.username,
+        role: admin.role,
+        description: "Mengunggah gambar profil",
+      });
+    } catch (logErr) {
+      console.error("Gagal mencatat log upload:", logErr.message);
+    }
 
     res.status(200).json({
       message: "Gambar profil berhasil diunggah",
-      profileImage: filePath,
+      profileImage: newFilePath,
     });
   } catch (error) {
-    res.status(400).json({
+    // 5. Bersihkan file yang baru diunggah jika terjadi error database
+    if (fs.existsSync(newFilePath)) {
+      fs.unlinkSync(newFilePath);
+    }
+
+    res.status(500).json({
       message: "Gagal mengunggah gambar profil",
       error: error.message,
     });
@@ -45,54 +67,37 @@ const uploadProfileImage = async (req, res) => {
 
 const getProfileImage = async (req, res) => {
   try {
-    const userId = req.session.userId; // Ambil userId dari session
+    const userId = req.session ? req.session.userId : null;
 
     if (!userId) {
       return res.status(401).json({ message: "Anda belum login" });
     }
 
-    // Cari admin berdasarkan userId
     const admin = await Admin.findByPk(userId);
-    if (!admin || !admin.profileImage) {
-      // Jika admin tidak ditemukan atau tidak memiliki gambar profil
+    if (!admin) {
+      return res.status(404).json({ message: "Admin tidak ditemukan" });
+    }
+
+    if (!admin.profileImage || !fs.existsSync(admin.profileImage)) {
       const defaultImagePath = path.join(
         __dirname,
         "..",
         "uploads",
         "default-profile-image.png"
       );
-      return res.status(200).sendFile(defaultImagePath);
+      if (fs.existsSync(defaultImagePath)) {
+        return res.status(200).sendFile(defaultImagePath);
+      }
+      return res.status(404).json({ message: "Gambar profil tidak ditemukan" });
     }
 
-    // Tentukan path gambar profil
-    const profileImagePath = path.join(__dirname, "..", admin.profileImage);
-
-    // Pastikan file gambar ada
-    try {
-      await fs.access(profileImagePath);
-    } catch (error) {
-      // Jika file tidak ditemukan, kirim gambar default
-      const defaultImagePath = path.join(
-        __dirname,
-        "..",
-        "uploads",
-        "default-profile-image.png"
-      );
-      return res.status(200).sendFile(defaultImagePath);
-    }
-
-    // Kirim file gambar profil sebagai respons
-    res.status(200).sendFile(profileImagePath);
+    res.status(200).sendFile(path.resolve(admin.profileImage));
   } catch (error) {
-    console.error("Error saat mendapatkan gambar profil:", error);
-    // Jika terjadi error, kirim gambar default
-    const defaultImagePath = path.join(
-      __dirname,
-      "..",
-      "uploads",
-      "default-profile-image.png"
-    );
-    res.status(200).sendFile(defaultImagePath);
+    console.error("Error saat mendapatkan gambar profil:", error.message);
+    res.status(500).json({
+      message: "Gagal mendapatkan gambar profil",
+      error: error.message,
+    });
   }
 };
 

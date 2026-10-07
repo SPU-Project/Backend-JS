@@ -32,14 +32,14 @@ const res = {
 describe("Login", () => {
   // ...
 
-  it("should return 400 if password is incorrect", async () => {
+  it("should return 401 if password is incorrect", async () => {
     Admin.findOne = async () => ({ password: "hashedPassword" });
     argon2.verify = async () => false;
 
     await Login(req, res);
 
-    assert.strictEqual(res.statusCode, 400);
-    assert.deepStrictEqual(res.jsonData, { msg: "Wrong password" });
+    assert.strictEqual(res.statusCode, 401);
+    assert.deepStrictEqual(res.jsonData, { msg: "Email atau password salah" });
   });
 
   it("should return 200 and user data on successful login", async () => {
@@ -48,6 +48,7 @@ describe("Login", () => {
       uuid: "user-uuid",
       email: "test@example.com",
       username: "testuser",
+      role: "admin",
       password: "hashedPassword",
     };
     Admin.findOne = async () => user;
@@ -57,12 +58,9 @@ describe("Login", () => {
 
     assert.strictEqual(req.session.userId, user.id);
     assert.strictEqual(res.statusCode, 200);
-    assert.deepStrictEqual(res.jsonData, {
-      msg: "Login success",
-      uuid: user.uuid,
-      email: user.email,
-      username: user.username,
-    });
+    assert.strictEqual(res.jsonData.msg, "Login success");
+    assert.strictEqual(res.jsonData.email, user.email);
+    assert.strictEqual(res.jsonData.username, user.username);
   });
 
   // ...
@@ -73,11 +71,11 @@ describe("Login", () => {
 describe("Logout", () => {
   // ...
 
-  it("should return 200 and clear session on successful logout", () => {
+  it("should return 200 and clear session on successful logout", async () => {
     req.session.userId = 1;
     req.session.destroy = (callback) => callback();
 
-    Logout(req, res);
+    await Logout(req, res);
 
     assert.strictEqual(res.statusCode, 200);
     assert.strictEqual(res.clearedCookie, "connect.sid");

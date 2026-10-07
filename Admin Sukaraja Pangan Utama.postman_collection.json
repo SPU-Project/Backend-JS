@@ -1,0 +1,1540 @@
+{
+  "info": {
+    "_postman_id": "2f5b7609-b9b4-48b4-92c4-e0d3f6549458",
+    "name": "Admin Sukaraja Pangan Utama",
+    "description": "PT. Sukaraja Pangan Utama\n\npenyedia jasa maklon bumbu untuk retail, bumbu masak instan, kaldu bubuk, sambal, dan jasa kemas.EndFragment",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "27811738"
+  },
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{url}}/health",
+          "host": [
+            "{{url}}"
+          ],
+          "path": [
+            "health"
+          ]
+        },
+        "description": "Memeriksa status liveness dan environment server SPU (Publik, tanpa perlu login)."
+      },
+      "response": [
+        {
+          "name": "200 OK",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/health",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "health"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\n  \"status\": \"ok\",\n  \"environment\": \"development\",\n  \"timestamp\": \"2026-10-07T09:39:16.144Z\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Login",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "email",
+                  "value": "spudev@gmail.com"
+                },
+                {
+                  "key": "password",
+                  "value": "123"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{url}}/login",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "login"
+              ]
+            },
+            "description": "Melakukan autentikasi dan inisialisasi session cookie connect.sid. Menggunakan argon2id dan anti-session-fixation."
+          },
+          "response": [
+            {
+              "name": "Login",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "email",
+                      "value": "spuofficial@gmail.com",
+                      "type": "text"
+                    },
+                    {
+                      "key": "password",
+                      "value": "123",
+                      "type": "text"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{url}}/login",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "login"
+                  ]
+                }
+              },
+              "_postman_previewlanguage": null,
+              "header": null,
+              "cookie": [],
+              "body": "{\r\n    \"msg\": \"Login success\",\r\n    \"uuid\": \"dc245076-d415-4d18-affa-ac4674eda55c\",\r\n    \"email\": \"spuofficial@gmail.com\",\r\n    \"username\": \"AdminSPU12345\",\r\n    \"role\": \"Admin\"\r\n}"
+            },
+            {
+              "name": "401 Unauthorized (Salah Kredensial)",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{url}}/login",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "login"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"msg\": \"Email atau password salah\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Me",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/me",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "me"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Get Me",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{url}}/me",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "me"
+                  ]
+                }
+              },
+              "_postman_previewlanguage": null,
+              "header": null,
+              "cookie": [],
+              "body": "{\r\n    \"user\": {\r\n        \"uuid\": \"dc245076-d415-4d18-affa-ac4674eda55c\",\r\n        \"email\": \"spuofficial@gmail.com\",\r\n        \"username\": \"AdminSPU12345\",\r\n        \"role\": \"Admin\"\r\n    }\r\n}"
+            }
+          ]
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/logout",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "logout"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Logout",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{url}}/logout",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "logout"
+                  ]
+                }
+              },
+              "_postman_previewlanguage": null,
+              "header": null,
+              "cookie": [],
+              "body": "{\r\n    \"msg\": \"Logout success\"\r\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "User CRUD",
+      "item": [
+        {
+          "name": "Create User",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "email",
+                  "value": "spudev@gmail.com"
+                },
+                {
+                  "key": "password",
+                  "value": "123"
+                },
+                {
+                  "key": "confPassword",
+                  "value": "123"
+                },
+                {
+                  "key": "username",
+                  "value": "spudev"
+                },
+                {
+                  "key": "role",
+                  "value": "Admin"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{url}}/users",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "users"
+              ]
+            },
+            "description": "Membuat user baru. Jika database kosong (0 user), endpoint ini terbuka untuk bootstrap superadmin pertama. Jika sudah ada user, wajib session superadmin."
+          },
+          "response": [
+            {
+              "name": "Create User",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "email",
+                      "value": "spuofficial@gmail.com",
+                      "type": "text"
+                    },
+                    {
+                      "key": "password",
+                      "value": "123",
+                      "type": "text"
+                    },
+                    {
+                      "key": "confPassword",
+                      "value": "123",
+                      "type": "text"
+                    },
+                    {
+                      "key": "username",
+                      "value": "AdminSPU12345",
+                      "type": "text"
+                    },
+                    {
+                      "key": "role",
+                      "value": "Admin",
+                      "type": "text"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{url}}/users",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "users"
+                  ]
+                }
+              },
+              "_postman_previewlanguage": null,
+              "header": null,
+              "cookie": [],
+              "body": "{\r\n    \"msg\": \"Registration successful\",\r\n    \"user\": {\r\n        \"id\": 17,\r\n        \"uuid\": \"94f85706-9acf-4c4c-8c1b-9c16c88bdea8\",\r\n        \"email\": \"spuofficiall@gmail.com\",\r\n        \"username\": \"AdminSPU1l2345\",\r\n        \"role\": \"Admin\"\r\n    }\r\n}"
+            },
+            {
+              "name": "201 Created (Success)",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{url}}/users",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "users"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"msg\": \"Registration successful\",\n  \"data\": {\n    \"id\": 1,\n    \"uuid\": \"38454013-7f52-47e9-8886-faa2c2bc54f7\",\n    \"email\": \"spudev@gmail.com\",\n    \"username\": \"spudev\",\n    \"role\": \"superadmin\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get All User",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/users",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "users"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Get All User",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "email",
+                      "value": "spuofficial@gmail.com",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "password",
+                      "value": "123",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "confPassword",
+                      "value": "123",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "username",
+                      "value": "AdminSPU1",
+                      "type": "text",
+                      "disabled": true
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{url}}/users",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "users"
+                  ]
+                }
+              },
+              "_postman_previewlanguage": null,
+              "header": null,
+              "cookie": [],
+              "body": "[\r\n    {\r\n        \"id\": 15,\r\n        \"uuid\": \"8ea35ed9-c756-4a74-b76a-3685204627ed\",\r\n        \"email\": \"operator123@gmail.com\",\r\n        \"username\": \"Operator\",\r\n        \"role\": \"Operator\"\r\n    },\r\n    {\r\n        \"id\": 16,\r\n        \"uuid\": \"892bc784-ec03-4d16-af7e-1f72e48f0225\",\r\n        \"email\": \"user@gmail.com\",\r\n        \"username\": \"User\",\r\n        \"role\": \"User\"\r\n    },\r\n    {\r\n        \"id\": 14,\r\n        \"uuid\": \"dc245076-d415-4d18-affa-ac4674eda55c\",\r\n        \"email\": \"spuofficial@gmail.com\",\r\n        \"username\": \"AdminSPU12345\",\r\n        \"role\": \"Admin\"\r\n    },\r\n    {\r\n        \"id\": 17,\r\n        \"uuid\": \"94f85706-9acf-4c4c-8c1b-9c16c88bdea8\",\r\n        \"email\": \"spuofficiall@gmail.com\",\r\n        \"username\": \"AdminSPU1l2345\",\r\n        \"role\": \"Admin\"\r\n    }\r\n]"
+            }
+          ]
+        },
+        {
+          "name": "Get User by Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/users/1",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "users",
+                "1"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Get All User",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "email",
+                      "value": "spuofficial@gmail.com",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "password",
+                      "value": "123",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "confPassword",
+                      "value": "123",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "username",
+                      "value": "AdminSPU1",
+                      "type": "text",
+                      "disabled": true
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{url}}/users",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "users"
+                  ]
+                }
+              },
+              "_postman_previewlanguage": null,
+              "header": null,
+              "cookie": [],
+              "body": "[\r\n    {\r\n        \"id\": 15,\r\n        \"uuid\": \"8ea35ed9-c756-4a74-b76a-3685204627ed\",\r\n        \"email\": \"operator123@gmail.com\",\r\n        \"username\": \"Operator\",\r\n        \"role\": \"Operator\"\r\n    },\r\n    {\r\n        \"id\": 16,\r\n        \"uuid\": \"892bc784-ec03-4d16-af7e-1f72e48f0225\",\r\n        \"email\": \"user@gmail.com\",\r\n        \"username\": \"User\",\r\n        \"role\": \"User\"\r\n    },\r\n    {\r\n        \"id\": 14,\r\n        \"uuid\": \"dc245076-d415-4d18-affa-ac4674eda55c\",\r\n        \"email\": \"spuofficial@gmail.com\",\r\n        \"username\": \"AdminSPU12345\",\r\n        \"role\": \"Admin\"\r\n    },\r\n    {\r\n        \"id\": 17,\r\n        \"uuid\": \"94f85706-9acf-4c4c-8c1b-9c16c88bdea8\",\r\n        \"email\": \"spuofficiall@gmail.com\",\r\n        \"username\": \"AdminSPU1l2345\",\r\n        \"role\": \"Admin\"\r\n    }\r\n]"
+            }
+          ]
+        },
+        {
+          "name": "Update User",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "email",
+                  "value": "spudevv@gmail.com"
+                },
+                {
+                  "key": "password",
+                  "value": "123"
+                },
+                {
+                  "key": "confPassword",
+                  "value": "123"
+                },
+                {
+                  "key": "username",
+                  "value": "spudev"
+                },
+                {
+                  "key": "role",
+                  "value": "Admin"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{url}}/users/1",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "users",
+                "1"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Update User",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "email",
+                      "value": "spuofficiall@gmail.com",
+                      "type": "text"
+                    },
+                    {
+                      "key": "password",
+                      "value": "123",
+                      "type": "text"
+                    },
+                    {
+                      "key": "confPassword",
+                      "value": "123",
+                      "type": "text"
+                    },
+                    {
+                      "key": "username",
+                      "value": "AdminSPU12345",
+                      "type": "text"
+                    },
+                    {
+                      "key": "role",
+                      "value": "User",
+                      "type": "text"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{url}}/users/4",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "4"
+                  ]
+                }
+              },
+              "_postman_previewlanguage": null,
+              "header": null,
+              "cookie": [],
+              "body": "{\r\n    \"msg\": \"User updated successfully\"\r\n}"
+            }
+          ]
+        },
+        {
+          "name": "Delete User by Id",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/users/1",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "users",
+                "1"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Delete User",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{url}}/users/2",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "users",
+                    "2"
+                  ]
+                }
+              },
+              "_postman_previewlanguage": null,
+              "header": null,
+              "cookie": [],
+              "body": "{\r\n    \"msg\": \"User deleted successfully\"\r\n}"
+            }
+          ]
+        },
+        {
+          "name": "Upload Profile",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "profileImage",
+                  "type": "file",
+                  "src": "/C:/Users/Hasan/Pictures/1.png"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{url}}/upload-profile",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "upload-profile"
+              ]
+            },
+            "description": "Mengunggah foto profil (maks 2MB, format JPEG/JPG/PNG). Wajib login terlebih dahulu (sessionChecker sebelum Multer)."
+          },
+          "response": [
+            {
+              "name": "Upload Profile",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "profileImage",
+                      "type": "file",
+                      "src": "/C:/Users/Hasan/Pictures/1.png"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{url}}/upload-profile",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "upload-profile"
+                  ]
+                }
+              },
+              "_postman_previewlanguage": null,
+              "header": null,
+              "cookie": [],
+              "body": "{\r\n    \"message\": \"Gambar profil berhasil diunggah\",\r\n    \"profileImage\": \"uploads\\\\profile-images\\\\1731308166661-1.png\"\r\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Profile Image",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "email",
+                  "value": "spuofficial@gmail.com",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "123",
+                  "type": "text"
+                },
+                {
+                  "key": "confPassword",
+                  "value": "123",
+                  "type": "text"
+                },
+                {
+                  "key": "username",
+                  "value": "AdminSPU1",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{url}}/profile-image",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "profile-image"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Bahan Baku CRUD",
+      "item": [
+        {
+          "name": "Create Bahan Baku",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"BahanBaku\": \"{{BahanBaku}}\",\r\n  \"Satuan\": \"{{Satuan}}\",\r\n  \"Harga\": \"{{Harga}}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/bahanbaku",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "bahanbaku"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Create Bahan Baku",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "BahanBaku",
+                      "value": "Anjingg",
+                      "type": "text"
+                    },
+                    {
+                      "key": "Harga",
+                      "value": "200000",
+                      "type": "text"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{url}}/bahanbaku",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "bahanbaku"
+                  ]
+                }
+              },
+              "_postman_previewlanguage": null,
+              "header": null,
+              "cookie": [],
+              "body": "{\r\n    \"message\": \"Bahan Baku Berhasil Ditambahkan\",\r\n    \"data\": {\r\n        \"id\": 6,\r\n        \"BahanBaku\": \"Ketan\",\r\n        \"Harga\": 200000,\r\n        \"updatedAt\": \"2024-11-11T06:50:51.733Z\",\r\n        \"createdAt\": \"2024-11-11T06:50:51.733Z\"\r\n    }\r\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Bahan Baku",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "BahanBaku",
+                  "value": "Cabe Merah",
+                  "type": "text"
+                },
+                {
+                  "key": "Harga",
+                  "value": "100000",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{url}}/bahanbaku",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "bahanbaku"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Get Bahan Baku",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "BahanBaku",
+                      "value": "Cabe Merah",
+                      "type": "text"
+                    },
+                    {
+                      "key": "Harga",
+                      "value": "100000",
+                      "type": "text"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{url}}/bahanbaku",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "bahanbaku"
+                  ]
+                }
+              },
+              "_postman_previewlanguage": null,
+              "header": null,
+              "cookie": [],
+              "body": "{\r\n    \"message\": \"Daftar Bahan Baku\",\r\n    \"data\": [\r\n        {\r\n            \"id\": 3,\r\n            \"BahanBaku\": \"Anjing\",\r\n            \"Harga\": 200000,\r\n            \"createdAt\": \"2024-11-09T12:01:36.754Z\",\r\n            \"updatedAt\": \"2024-11-09T12:01:36.754Z\"\r\n        },\r\n        {\r\n            \"id\": 5,\r\n            \"BahanBaku\": \"Anjingg\",\r\n            \"Harga\": 200000,\r\n            \"createdAt\": \"2024-11-11T04:09:57.071Z\",\r\n            \"updatedAt\": \"2024-11-11T04:09:57.071Z\"\r\n        },\r\n        {\r\n            \"id\": 6,\r\n            \"BahanBaku\": \"Ketan\",\r\n            \"Harga\": 200000,\r\n            \"createdAt\": \"2024-11-11T06:50:51.733Z\",\r\n            \"updatedAt\": \"2024-11-11T06:50:51.733Z\"\r\n        }\r\n    ]\r\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update Bahan Baku by Id",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "BahanBaku",
+                  "value": "Cabe Kuninggggggg",
+                  "type": "text"
+                },
+                {
+                  "key": "Harga",
+                  "value": "723",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{url}}/bahanbaku/6",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "bahanbaku",
+                "6"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Update Bahan Baku by Id",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "BahanBaku",
+                      "value": "Cabe Kuninggggggg",
+                      "type": "text"
+                    },
+                    {
+                      "key": "Harga",
+                      "value": "723",
+                      "type": "text"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{url}}/bahanbaku/19",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "bahanbaku",
+                    "19"
+                  ]
+                }
+              },
+              "_postman_previewlanguage": null,
+              "header": null,
+              "cookie": [],
+              "body": "{\r\n    \"message\": \"Bahan Baku Berhasil Diupdate\",\r\n    \"data\": {\r\n        \"id\": 6,\r\n        \"BahanBaku\": \"Cabe Kuninggggggg\",\r\n        \"Harga\": \"723\",\r\n        \"createdAt\": \"2024-11-11T06:50:51.733Z\",\r\n        \"updatedAt\": \"2024-11-11T07:08:13.710Z\"\r\n    }\r\n}"
+            }
+          ]
+        },
+        {
+          "name": "Delete Bahan Baku by Id",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/bahanbaku/6",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "bahanbaku",
+                "6"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Delete Bahan Baku by Id",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{url}}/bahanbaku/2",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "bahanbaku",
+                    "2"
+                  ]
+                }
+              },
+              "_postman_previewlanguage": null,
+              "header": null,
+              "cookie": [],
+              "body": "{\r\n    \"message\": \"Bahan Baku Berhasil Dihapus\"\r\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Stok Bahan Baku RU",
+      "item": [
+        {
+          "name": "Update Stok Bahan Baku by Id",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "Stok",
+                  "value": "5111",
+                  "type": "text"
+                },
+                {
+                  "key": "Harga",
+                  "value": "200000",
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{url}}/stokbahanbaku/5",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "stokbahanbaku",
+                "5"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Update Stok Bahan Baku by Id",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "Stok",
+                      "value": "53",
+                      "type": "text"
+                    },
+                    {
+                      "key": "Harga",
+                      "value": "200000",
+                      "type": "text",
+                      "disabled": true
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{url}}/stokbahanbaku/3",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "stokbahanbaku",
+                    "3"
+                  ]
+                }
+              },
+              "_postman_previewlanguage": null,
+              "header": null,
+              "cookie": [],
+              "body": "{\r\n    \"message\": \"Stok Bahan Baku Berhasil Diupdate\",\r\n    \"data\": {\r\n        \"id\": 5,\r\n        \"BahanBakuId\": 6,\r\n        \"BahanBaku\": \"Cabe Kuninggggggg\",\r\n        \"Stok\": \"5111\",\r\n        \"TanggalPembaruan\": \"2024-11-11T07:07:06.920Z\",\r\n        \"createdAt\": \"2024-11-11T06:50:51.742Z\",\r\n        \"updatedAt\": \"2024-11-11T07:07:06.920Z\"\r\n    }\r\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get All Stok Bahan Baku",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "Stok",
+                  "value": "53",
+                  "type": "text"
+                },
+                {
+                  "key": "Harga",
+                  "value": "200000",
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{url}}/stokbahanbaku",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "stokbahanbaku"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Get All Stok Bahan Baku",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "Stok",
+                      "value": "53",
+                      "type": "text"
+                    },
+                    {
+                      "key": "Harga",
+                      "value": "200000",
+                      "type": "text",
+                      "disabled": true
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{url}}/stokbahanbaku",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "stokbahanbaku"
+                  ]
+                }
+              },
+              "_postman_previewlanguage": null,
+              "header": null,
+              "cookie": [],
+              "body": "{\r\n    \"message\": \"Daftar Stok Bahan Baku\",\r\n    \"data\": [\r\n        {\r\n            \"id\": 3,\r\n            \"BahanBakuId\": 3,\r\n            \"BahanBaku\": \"Anjing\",\r\n            \"Stok\": 58,\r\n            \"TanggalPembaruan\": \"2024-11-09T12:01:36.761Z\",\r\n            \"createdAt\": \"2024-11-09T12:01:36.762Z\",\r\n            \"updatedAt\": \"2024-11-11T06:46:59.723Z\"\r\n        },\r\n        {\r\n            \"id\": 4,\r\n            \"BahanBakuId\": 5,\r\n            \"BahanBaku\": \"Anjingg\",\r\n            \"Stok\": 0,\r\n            \"TanggalPembaruan\": \"2024-11-11T04:09:57.073Z\",\r\n            \"createdAt\": \"2024-11-11T04:09:57.073Z\",\r\n            \"updatedAt\": \"2024-11-11T06:47:22.830Z\"\r\n        }\r\n    ]\r\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Produk CRUD",
+      "item": [
+        {
+          "name": "Create",
+          "item": [
+            {
+              "name": "Total Cost Produk",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"namaProduk\": \"Ayam Kalkun\",\r\n  \"bahanBaku\": [\r\n    { \"id\": 1, \"jumlah\": 200 }\r\n  ],\r\n  \"overhead\": [\r\n    { \"namaOverhead\": \"as\", \"harga\": 1111 }\r\n  ],\r\n  \"kemasan\": [\r\n    { \"namaKemasan\": \"as\", \"harga\": 0 }\r\n  ]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{url}}/produk",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "produk"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Read",
+          "item": [
+            {
+              "name": "Gett All Produk",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{url}}/produkdetails",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "produkdetails"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Get Produk by Id",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{url}}/produkdetails/9",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "produkdetails",
+                    "9"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Update",
+          "item": [
+            {
+              "name": "Update Jumlah Produk",
+              "request": {
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"namaProduk\": \"Produk A\",\r\n  \"bahanBaku\": [\r\n    { \"id\": 1, \"jumlah\": 15 }\r\n  ],\r\n  \"overhead\": [\r\n    { \"namaOverhead\": \"Listrik\", \"harga\": 23500 }\r\n  ],\r\n  \"kemasan\": [\r\n    { \"namaKemasan\": \"Botol\", \"harga\": 13500 }\r\n  ]\r\n}\r\n",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{url}}/produkbahanbakudetails/4",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "produkbahanbakudetails",
+                    "4"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update V2",
+              "request": {
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"namaProduk\": \"Produk Bc\",\r\n  \"bahanBaku\": [\r\n    {\r\n      \"id\": 1,\r\n      \"jumlah\": 550\r\n    },\r\n    {\r\n      \"id\": 3,\r\n      \"jumlah\": 560\r\n    },\r\n\t\t{\r\n      \"id\": 4,\r\n      \"jumlah\": 560\r\n    }\r\n  ],\r\n  \"overhead\": [\r\n    {\r\n      \"namaOverhead\": \"Biaya Listrik\",\r\n      \"harga\": 20000\r\n    },\r\n    {\r\n      \"namaOverhead\": \"Biaya Transportasi\",\r\n      \"harga\": 15000\r\n    }\r\n  ],\r\n  \"kemasan\": [\r\n    {\r\n      \"namaKemasan\": \"Kotak Kecil\",\r\n      \"harga\": 5000\r\n    },\r\n    {\r\n      \"namaKemasan\": \"Kotak Besar\",\r\n      \"harga\": 10000\r\n    }\r\n  ]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{url}}/produkbahanbaku/12",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "produkbahanbaku",
+                    "12"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Delete",
+          "item": [
+            {
+              "name": "Delete Produk by Id",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{url}}/produkdelete/1",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "produkdelete",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Riwayat Log",
+      "item": [
+        {
+          "name": "Gett all Riwayat Log",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/riwayat",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "riwayat"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Gett all Riwayat Log",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{url}}/riwayat",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "riwayat"
+                  ]
+                }
+              },
+              "_postman_previewlanguage": null,
+              "header": null,
+              "cookie": [],
+              "body": "{\r\n    \"message\": \"Daftar Riwayat Log\",\r\n    \"data\": [\r\n        {\r\n            \"id\": 117,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-11T06:50:51.809Z\",\r\n            \"description\": \"Menambahkan Bahan Baku: Ketan\",\r\n            \"createdAt\": \"2024-11-11T06:50:51.809Z\",\r\n            \"updatedAt\": \"2024-11-11T06:50:51.809Z\"\r\n        },\r\n        {\r\n            \"id\": 116,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-11T06:47:22.897Z\",\r\n            \"description\": \"Mengupdate Stok Bahan Baku dari 58 ke 0\",\r\n            \"createdAt\": \"2024-11-11T06:47:22.897Z\",\r\n            \"updatedAt\": \"2024-11-11T06:47:22.897Z\"\r\n        },\r\n        {\r\n            \"id\": 115,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-11T06:47:11.099Z\",\r\n            \"description\": \"Mengupdate Stok Bahan Baku dari null ke 58\",\r\n            \"createdAt\": \"2024-11-11T06:47:11.099Z\",\r\n            \"updatedAt\": \"2024-11-11T06:47:11.099Z\"\r\n        },\r\n        {\r\n            \"id\": 114,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-11T06:46:59.763Z\",\r\n            \"description\": \"Mengupdate Stok Bahan Baku dari 57 ke 58\",\r\n            \"createdAt\": \"2024-11-11T06:46:59.763Z\",\r\n            \"updatedAt\": \"2024-11-11T06:46:59.763Z\"\r\n        },\r\n        {\r\n            \"id\": 113,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-11T06:44:44.708Z\",\r\n            \"description\": \"Mengupdate Stok Bahan Baku dari 53 ke 57\",\r\n            \"createdAt\": \"2024-11-11T06:44:44.708Z\",\r\n            \"updatedAt\": \"2024-11-11T06:44:44.708Z\"\r\n        },\r\n        {\r\n            \"id\": 112,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-11T06:41:11.615Z\",\r\n            \"description\": \"Mengupdate Bahan Baku dari 50 ke 53\",\r\n            \"createdAt\": \"2024-11-11T06:41:11.615Z\",\r\n            \"updatedAt\": \"2024-11-11T06:41:11.615Z\"\r\n        },\r\n        {\r\n            \"id\": 111,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-11T06:40:38.950Z\",\r\n            \"description\": \"Mengupdate Bahan Baku dari 51 ke [object SequelizeInstance:stokbahanbaku]\",\r\n            \"createdAt\": \"2024-11-11T06:40:38.950Z\",\r\n            \"updatedAt\": \"2024-11-11T06:40:38.950Z\"\r\n        },\r\n        {\r\n            \"id\": 110,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-11T06:38:29.051Z\",\r\n            \"description\": \"Mengupdate Bahan Baku dari 51 ke 50\",\r\n            \"createdAt\": \"2024-11-11T06:38:29.052Z\",\r\n            \"updatedAt\": \"2024-11-11T06:38:29.052Z\"\r\n        },\r\n        {\r\n            \"id\": 109,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-11T06:36:10.076Z\",\r\n            \"description\": \"Mengupdate Bahan Baku dari null ke 55\",\r\n            \"createdAt\": \"2024-11-11T06:36:10.076Z\",\r\n            \"updatedAt\": \"2024-11-11T06:36:10.076Z\"\r\n        },\r\n        {\r\n            \"id\": 108,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-11T06:35:54.369Z\",\r\n            \"description\": \"Mengupdate Bahan Baku dari 51 ke 55\",\r\n            \"createdAt\": \"2024-11-11T06:35:54.369Z\",\r\n            \"updatedAt\": \"2024-11-11T06:35:54.369Z\"\r\n        },\r\n        {\r\n            \"id\": 107,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-11T06:35:22.962Z\",\r\n            \"description\": \"Mengupdate Bahan Baku dari 51 ke 53\",\r\n            \"createdAt\": \"2024-11-11T06:35:22.963Z\",\r\n            \"updatedAt\": \"2024-11-11T06:35:22.963Z\"\r\n        },\r\n        {\r\n            \"id\": 106,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-11T06:34:23.603Z\",\r\n            \"description\": \"Mengupdate Bahan Baku dari null ke 53\",\r\n            \"createdAt\": \"2024-11-11T06:34:23.603Z\",\r\n            \"updatedAt\": \"2024-11-11T06:34:23.603Z\"\r\n        },\r\n        {\r\n            \"id\": 105,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-11T06:34:12.881Z\",\r\n            \"description\": \"Mengupdate Bahan Baku dari 51 ke 53\",\r\n            \"createdAt\": \"2024-11-11T06:34:12.882Z\",\r\n            \"updatedAt\": \"2024-11-11T06:34:12.882Z\"\r\n        },\r\n        {\r\n            \"id\": 104,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-11T06:33:15.885Z\",\r\n            \"description\": \"Mengupdate Bahan Baku dari 51 ke 53\",\r\n            \"createdAt\": \"2024-11-11T06:33:15.885Z\",\r\n            \"updatedAt\": \"2024-11-11T06:33:15.885Z\"\r\n        },\r\n        {\r\n            \"id\": 103,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-11T06:32:18.521Z\",\r\n            \"description\": \"Mengupdate Bahan Baku dari 51 ke [object SequelizeInstance:stokbahanbaku]\",\r\n            \"createdAt\": \"2024-11-11T06:32:18.521Z\",\r\n            \"updatedAt\": \"2024-11-11T06:32:18.521Z\"\r\n        },\r\n        {\r\n            \"id\": 102,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-11T06:24:30.238Z\",\r\n            \"description\": \"Mengupdate Bahan Baku dari 50 ke [object SequelizeInstance:stokbahanbaku]\",\r\n            \"createdAt\": \"2024-11-11T06:24:30.238Z\",\r\n            \"updatedAt\": \"2024-11-11T06:24:30.238Z\"\r\n        },\r\n        {\r\n            \"id\": 101,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-11T06:24:18.022Z\",\r\n            \"description\": \"Mengupdate Bahan Baku dari 50 ke [object SequelizeInstance:stokbahanbaku]\",\r\n            \"createdAt\": \"2024-11-11T06:24:18.022Z\",\r\n            \"updatedAt\": \"2024-11-11T06:24:18.022Z\"\r\n        },\r\n        {\r\n            \"id\": 100,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-11T06:13:04.768Z\",\r\n            \"description\": \"Menghapus Bahan Baku: Garam\",\r\n            \"createdAt\": \"2024-11-11T06:13:04.768Z\",\r\n            \"updatedAt\": \"2024-11-11T06:13:04.768Z\"\r\n        },\r\n        {\r\n            \"id\": 99,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-11T04:09:57.160Z\",\r\n            \"description\": \"Menambahkan Bahan Baku: Anjingg\",\r\n            \"createdAt\": \"2024-11-11T04:09:57.160Z\",\r\n            \"updatedAt\": \"2024-11-11T04:09:57.160Z\"\r\n        },\r\n        {\r\n            \"id\": 98,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-09T12:01:48.853Z\",\r\n            \"description\": \"Menghapus Bahan Baku: Telur\",\r\n            \"createdAt\": \"2024-11-09T12:01:48.853Z\",\r\n            \"updatedAt\": \"2024-11-09T12:01:48.853Z\"\r\n        },\r\n        {\r\n            \"id\": 97,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-09T12:01:36.798Z\",\r\n            \"description\": \"Menambahkan Bahan Baku: Anjing\",\r\n            \"createdAt\": \"2024-11-09T12:01:36.798Z\",\r\n            \"updatedAt\": \"2024-11-09T12:01:36.798Z\"\r\n        },\r\n        {\r\n            \"id\": 96,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-09T11:59:30.954Z\",\r\n            \"description\": \"Menambahkan Bahan Baku: Garam\",\r\n            \"createdAt\": \"2024-11-09T11:59:30.955Z\",\r\n            \"updatedAt\": \"2024-11-09T11:59:30.955Z\"\r\n        },\r\n        {\r\n            \"id\": 95,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-09T11:59:25.544Z\",\r\n            \"description\": \"User logged in\",\r\n            \"createdAt\": \"2024-11-09T11:59:25.545Z\",\r\n            \"updatedAt\": \"2024-11-09T11:59:25.545Z\"\r\n        },\r\n        {\r\n            \"id\": 94,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-09T11:57:05.766Z\",\r\n            \"description\": \"Menambahkan Bahan Baku: Telur\",\r\n            \"createdAt\": \"2024-11-09T11:57:05.766Z\",\r\n            \"updatedAt\": \"2024-11-09T11:57:05.766Z\"\r\n        },\r\n        {\r\n            \"id\": 93,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-09T10:42:43.373Z\",\r\n            \"description\": \"User logged in\",\r\n            \"createdAt\": \"2024-11-09T10:42:43.373Z\",\r\n            \"updatedAt\": \"2024-11-09T10:42:43.373Z\"\r\n        },\r\n        {\r\n            \"id\": 92,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-09T10:39:58.916Z\",\r\n            \"description\": \"User logged in\",\r\n            \"createdAt\": \"2024-11-09T10:39:58.916Z\",\r\n            \"updatedAt\": \"2024-11-09T10:39:58.916Z\"\r\n        },\r\n        {\r\n            \"id\": 91,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-09T10:39:58.909Z\",\r\n            \"description\": \"User logged in\",\r\n            \"createdAt\": \"2024-11-09T10:39:58.910Z\",\r\n            \"updatedAt\": \"2024-11-09T10:39:58.910Z\"\r\n        },\r\n        {\r\n            \"id\": 90,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-09T09:16:39.209Z\",\r\n            \"description\": \"User logged in\",\r\n            \"createdAt\": \"2024-11-09T09:16:39.209Z\",\r\n            \"updatedAt\": \"2024-11-09T09:16:39.209Z\"\r\n        },\r\n        {\r\n            \"id\": 89,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-09T09:03:48.641Z\",\r\n            \"description\": \"User logged out\",\r\n            \"createdAt\": \"2024-11-09T09:03:48.641Z\",\r\n            \"updatedAt\": \"2024-11-09T09:03:48.641Z\"\r\n        },\r\n        {\r\n            \"id\": 88,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-09T09:03:44.147Z\",\r\n            \"description\": \"User logged in\",\r\n            \"createdAt\": \"2024-11-09T09:03:44.147Z\",\r\n            \"updatedAt\": \"2024-11-09T09:03:44.147Z\"\r\n        },\r\n        {\r\n            \"id\": 87,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-09T09:03:40.695Z\",\r\n            \"description\": \"User logged out\",\r\n            \"createdAt\": \"2024-11-09T09:03:40.695Z\",\r\n            \"updatedAt\": \"2024-11-09T09:03:40.695Z\"\r\n        },\r\n        {\r\n            \"id\": 86,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-09T09:03:27.292Z\",\r\n            \"description\": \"User logged in\",\r\n            \"createdAt\": \"2024-11-09T09:03:27.292Z\",\r\n            \"updatedAt\": \"2024-11-09T09:03:27.292Z\"\r\n        },\r\n        {\r\n            \"id\": 85,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-09T09:02:54.525Z\",\r\n            \"description\": \"User logged in\",\r\n            \"createdAt\": \"2024-11-09T09:02:54.526Z\",\r\n            \"updatedAt\": \"2024-11-09T09:02:54.526Z\"\r\n        },\r\n        {\r\n            \"id\": 84,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-09T09:02:53.929Z\",\r\n            \"description\": \"User logged in\",\r\n            \"createdAt\": \"2024-11-09T09:02:53.930Z\",\r\n            \"updatedAt\": \"2024-11-09T09:02:53.930Z\"\r\n        },\r\n        {\r\n            \"id\": 83,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-07T16:59:23.887Z\",\r\n            \"description\": \"User logged out\",\r\n            \"createdAt\": \"2024-11-07T16:59:23.887Z\",\r\n            \"updatedAt\": \"2024-11-07T16:59:23.887Z\"\r\n        },\r\n        {\r\n            \"id\": 82,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-07T16:59:17.291Z\",\r\n            \"description\": \"User logged in\",\r\n            \"createdAt\": \"2024-11-07T16:59:17.291Z\",\r\n            \"updatedAt\": \"2024-11-07T16:59:17.291Z\"\r\n        },\r\n        {\r\n            \"id\": 81,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-07T16:57:35.612Z\",\r\n            \"description\": \"User logged out\",\r\n            \"createdAt\": \"2024-11-07T16:57:35.612Z\",\r\n            \"updatedAt\": \"2024-11-07T16:57:35.612Z\"\r\n        },\r\n        {\r\n            \"id\": 80,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-07T16:57:32.885Z\",\r\n            \"description\": \"User logged in\",\r\n            \"createdAt\": \"2024-11-07T16:57:32.886Z\",\r\n            \"updatedAt\": \"2024-11-07T16:57:32.886Z\"\r\n        },\r\n        {\r\n            \"id\": 79,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-07T16:56:49.933Z\",\r\n            \"description\": \"User logged out\",\r\n            \"createdAt\": \"2024-11-07T16:56:49.933Z\",\r\n            \"updatedAt\": \"2024-11-07T16:56:49.933Z\"\r\n        },\r\n        {\r\n            \"id\": 78,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-07T16:56:43.603Z\",\r\n            \"description\": \"User logged in\",\r\n            \"createdAt\": \"2024-11-07T16:56:43.604Z\",\r\n            \"updatedAt\": \"2024-11-07T16:56:43.604Z\"\r\n        },\r\n        {\r\n            \"id\": 77,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-07T16:41:29.490Z\",\r\n            \"description\": \"User logged in\",\r\n            \"createdAt\": \"2024-11-07T16:41:29.490Z\",\r\n            \"updatedAt\": \"2024-11-07T16:41:29.490Z\"\r\n        },\r\n        {\r\n            \"id\": 76,\r\n            \"username\": \"User\",\r\n            \"role\": \"User\",\r\n            \"date\": \"2024-11-07T16:13:58.796Z\",\r\n            \"description\": \"User logged out\",\r\n            \"createdAt\": \"2024-11-07T16:13:58.796Z\",\r\n            \"updatedAt\": \"2024-11-07T16:13:58.796Z\"\r\n        },\r\n        {\r\n            \"id\": 75,\r\n            \"username\": \"User\",\r\n            \"role\": \"User\",\r\n            \"date\": \"2024-11-07T16:13:52.686Z\",\r\n            \"description\": \"User logged in\",\r\n            \"createdAt\": \"2024-11-07T16:13:52.686Z\",\r\n            \"updatedAt\": \"2024-11-07T16:13:52.686Z\"\r\n        },\r\n        {\r\n            \"id\": 74,\r\n            \"username\": \"User\",\r\n            \"role\": \"User\",\r\n            \"date\": \"2024-11-07T16:13:34.279Z\",\r\n            \"description\": \"User logged in\",\r\n            \"createdAt\": \"2024-11-07T16:13:34.279Z\",\r\n            \"updatedAt\": \"2024-11-07T16:13:34.279Z\"\r\n        },\r\n        {\r\n            \"id\": 73,\r\n            \"username\": \"User\",\r\n            \"role\": \"User\",\r\n            \"date\": \"2024-11-07T16:13:28.665Z\",\r\n            \"description\": \"User logged in\",\r\n            \"createdAt\": \"2024-11-07T16:13:28.666Z\",\r\n            \"updatedAt\": \"2024-11-07T16:13:28.666Z\"\r\n        },\r\n        {\r\n            \"id\": 72,\r\n            \"username\": \"User\",\r\n            \"role\": \"User\",\r\n            \"date\": \"2024-11-07T16:13:07.182Z\",\r\n            \"description\": \"User logged out\",\r\n            \"createdAt\": \"2024-11-07T16:13:07.182Z\",\r\n            \"updatedAt\": \"2024-11-07T16:13:07.182Z\"\r\n        },\r\n        {\r\n            \"id\": 71,\r\n            \"username\": \"User\",\r\n            \"role\": \"User\",\r\n            \"date\": \"2024-11-07T16:12:54.796Z\",\r\n            \"description\": \"User logged in\",\r\n            \"createdAt\": \"2024-11-07T16:12:54.796Z\",\r\n            \"updatedAt\": \"2024-11-07T16:12:54.796Z\"\r\n        },\r\n        {\r\n            \"id\": 70,\r\n            \"username\": \"Operator\",\r\n            \"role\": \"Operator\",\r\n            \"date\": \"2024-11-07T16:12:51.414Z\",\r\n            \"description\": \"User logged out\",\r\n            \"createdAt\": \"2024-11-07T16:12:51.414Z\",\r\n            \"updatedAt\": \"2024-11-07T16:12:51.414Z\"\r\n        },\r\n        {\r\n            \"id\": 69,\r\n            \"username\": \"Operator\",\r\n            \"role\": \"Operator\",\r\n            \"date\": \"2024-11-07T16:12:37.436Z\",\r\n            \"description\": \"User logged in\",\r\n            \"createdAt\": \"2024-11-07T16:12:37.436Z\",\r\n            \"updatedAt\": \"2024-11-07T16:12:37.436Z\"\r\n        },\r\n        {\r\n            \"id\": 68,\r\n            \"username\": \"Operator\",\r\n            \"role\": \"Operator\",\r\n            \"date\": \"2024-11-07T16:12:30.191Z\",\r\n            \"description\": \"User logged out\",\r\n            \"createdAt\": \"2024-11-07T16:12:30.191Z\",\r\n            \"updatedAt\": \"2024-11-07T16:12:30.191Z\"\r\n        },\r\n        {\r\n            \"id\": 67,\r\n            \"username\": \"Operator\",\r\n            \"role\": \"Operator\",\r\n            \"date\": \"2024-11-07T16:12:19.366Z\",\r\n            \"description\": \"User logged in\",\r\n            \"createdAt\": \"2024-11-07T16:12:19.366Z\",\r\n            \"updatedAt\": \"2024-11-07T16:12:19.366Z\"\r\n        },\r\n        {\r\n            \"id\": 66,\r\n            \"username\": \"Operator\",\r\n            \"role\": \"Operator\",\r\n            \"date\": \"2024-11-07T16:12:11.248Z\",\r\n            \"description\": \"User logged out\",\r\n            \"createdAt\": \"2024-11-07T16:12:11.248Z\",\r\n            \"updatedAt\": \"2024-11-07T16:12:11.248Z\"\r\n        },\r\n        {\r\n            \"id\": 65,\r\n            \"username\": \"Operator\",\r\n            \"role\": \"Operator\",\r\n            \"date\": \"2024-11-07T16:12:00.999Z\",\r\n            \"description\": \"User logged in\",\r\n            \"createdAt\": \"2024-11-07T16:12:00.999Z\",\r\n            \"updatedAt\": \"2024-11-07T16:12:00.999Z\"\r\n        },\r\n        {\r\n            \"id\": 64,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-07T16:11:53.464Z\",\r\n            \"description\": \"User logged out\",\r\n            \"createdAt\": \"2024-11-07T16:11:53.464Z\",\r\n            \"updatedAt\": \"2024-11-07T16:11:53.464Z\"\r\n        },\r\n        {\r\n            \"id\": 63,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-07T16:11:43.827Z\",\r\n            \"description\": \"User logged in\",\r\n            \"createdAt\": \"2024-11-07T16:11:43.827Z\",\r\n            \"updatedAt\": \"2024-11-07T16:11:43.827Z\"\r\n        },\r\n        {\r\n            \"id\": 62,\r\n            \"username\": \"Operator\",\r\n            \"role\": \"Operator\",\r\n            \"date\": \"2024-11-07T16:11:16.094Z\",\r\n            \"description\": \"User logged in\",\r\n            \"createdAt\": \"2024-11-07T16:11:16.094Z\",\r\n            \"updatedAt\": \"2024-11-07T16:11:16.094Z\"\r\n        },\r\n        {\r\n            \"id\": 61,\r\n            \"username\": \"Operator\",\r\n            \"role\": \"Operator\",\r\n            \"date\": \"2024-11-07T16:10:59.379Z\",\r\n            \"description\": \"User logged in\",\r\n            \"createdAt\": \"2024-11-07T16:10:59.379Z\",\r\n            \"updatedAt\": \"2024-11-07T16:10:59.379Z\"\r\n        },\r\n        {\r\n            \"id\": 60,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-07T16:06:54.350Z\",\r\n            \"description\": \"User logged out\",\r\n            \"createdAt\": \"2024-11-07T16:06:54.350Z\",\r\n            \"updatedAt\": \"2024-11-07T16:06:54.350Z\"\r\n        },\r\n        {\r\n            \"id\": 59,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-07T16:06:15.566Z\",\r\n            \"description\": \"User logged in\",\r\n            \"createdAt\": \"2024-11-07T16:06:15.566Z\",\r\n            \"updatedAt\": \"2024-11-07T16:06:15.566Z\"\r\n        },\r\n        {\r\n            \"id\": 58,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-07T16:01:16.814Z\",\r\n            \"description\": \"Mengupdate Bahan Baku dari Ayamm ke Ayamm\",\r\n            \"createdAt\": \"2024-11-07T16:01:16.814Z\",\r\n            \"updatedAt\": \"2024-11-07T16:01:16.814Z\"\r\n        },\r\n        {\r\n            \"id\": 57,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-07T16:01:09.413Z\",\r\n            \"description\": \"Menghapus Bahan Baku: AyammJago\",\r\n            \"createdAt\": \"2024-11-07T16:01:09.413Z\",\r\n            \"updatedAt\": \"2024-11-07T16:01:09.413Z\"\r\n        },\r\n        {\r\n            \"id\": 56,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-07T16:01:04.585Z\",\r\n            \"description\": \"Menambahkan Bahan Baku: Garam\",\r\n            \"createdAt\": \"2024-11-07T16:01:04.585Z\",\r\n            \"updatedAt\": \"2024-11-07T16:01:04.585Z\"\r\n        },\r\n        {\r\n            \"id\": 55,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-07T16:00:57.975Z\",\r\n            \"description\": \"User logged in\",\r\n            \"createdAt\": \"2024-11-07T16:00:57.975Z\",\r\n            \"updatedAt\": \"2024-11-07T16:00:57.975Z\"\r\n        },\r\n        {\r\n            \"id\": 54,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-07T16:00:45.163Z\",\r\n            \"description\": \"User logged in\",\r\n            \"createdAt\": \"2024-11-07T16:00:45.163Z\",\r\n            \"updatedAt\": \"2024-11-07T16:00:45.163Z\"\r\n        },\r\n        {\r\n            \"id\": 53,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-07T16:00:34.812Z\",\r\n            \"description\": \"User logged in\",\r\n            \"createdAt\": \"2024-11-07T16:00:34.812Z\",\r\n            \"updatedAt\": \"2024-11-07T16:00:34.812Z\"\r\n        },\r\n        {\r\n            \"id\": 52,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-07T16:00:18.498Z\",\r\n            \"description\": \"User logged out\",\r\n            \"createdAt\": \"2024-11-07T16:00:18.498Z\",\r\n            \"updatedAt\": \"2024-11-07T16:00:18.498Z\"\r\n        },\r\n        {\r\n            \"id\": 51,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-07T16:00:15.395Z\",\r\n            \"description\": \"User logged in\",\r\n            \"createdAt\": \"2024-11-07T16:00:15.395Z\",\r\n            \"updatedAt\": \"2024-11-07T16:00:15.395Z\"\r\n        },\r\n        {\r\n            \"id\": 50,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-07T16:00:11.605Z\",\r\n            \"description\": \"User logged out\",\r\n            \"createdAt\": \"2024-11-07T16:00:11.605Z\",\r\n            \"updatedAt\": \"2024-11-07T16:00:11.605Z\"\r\n        },\r\n        {\r\n            \"id\": 49,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-07T15:57:30.359Z\",\r\n            \"description\": \"User logged in\",\r\n            \"createdAt\": \"2024-11-07T15:57:30.359Z\",\r\n            \"updatedAt\": \"2024-11-07T15:57:30.359Z\"\r\n        },\r\n        {\r\n            \"id\": 48,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-07T15:55:54.012Z\",\r\n            \"description\": \"User logged in\",\r\n            \"createdAt\": \"2024-11-07T15:55:54.012Z\",\r\n            \"updatedAt\": \"2024-11-07T15:55:54.012Z\"\r\n        },\r\n        {\r\n            \"id\": 47,\r\n            \"username\": \"User\",\r\n            \"role\": \"User\",\r\n            \"date\": \"2024-11-07T15:40:12.917Z\",\r\n            \"description\": \"User logged out\",\r\n            \"createdAt\": \"2024-11-07T15:40:12.917Z\",\r\n            \"updatedAt\": \"2024-11-07T15:40:12.917Z\"\r\n        },\r\n        {\r\n            \"id\": 46,\r\n            \"username\": \"User\",\r\n            \"role\": \"User\",\r\n            \"date\": \"2024-11-07T15:40:09.521Z\",\r\n            \"description\": \"User logged in\",\r\n            \"createdAt\": \"2024-11-07T15:40:09.521Z\",\r\n            \"updatedAt\": \"2024-11-07T15:40:09.521Z\"\r\n        },\r\n        {\r\n            \"id\": 45,\r\n            \"username\": \"User\",\r\n            \"role\": \"User\",\r\n            \"date\": \"2024-11-07T15:39:57.756Z\",\r\n            \"description\": \"User logged out\",\r\n            \"createdAt\": \"2024-11-07T15:39:57.756Z\",\r\n            \"updatedAt\": \"2024-11-07T15:39:57.756Z\"\r\n        },\r\n        {\r\n            \"id\": 44,\r\n            \"username\": \"User\",\r\n            \"role\": \"User\",\r\n            \"date\": \"2024-11-07T15:39:53.540Z\",\r\n            \"description\": \"User logged in\",\r\n            \"createdAt\": \"2024-11-07T15:39:53.540Z\",\r\n            \"updatedAt\": \"2024-11-07T15:39:53.540Z\"\r\n        },\r\n        {\r\n            \"id\": 43,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-07T15:39:43.138Z\",\r\n            \"description\": \"User logged out\",\r\n            \"createdAt\": \"2024-11-07T15:39:43.138Z\",\r\n            \"updatedAt\": \"2024-11-07T15:39:43.138Z\"\r\n        },\r\n        {\r\n            \"id\": 42,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-07T15:39:06.160Z\",\r\n            \"description\": \"User logged in\",\r\n            \"createdAt\": \"2024-11-07T15:39:06.160Z\",\r\n            \"updatedAt\": \"2024-11-07T15:39:06.160Z\"\r\n        },\r\n        {\r\n            \"id\": 41,\r\n            \"username\": \"Operator\",\r\n            \"role\": \"Operator\",\r\n            \"date\": \"2024-11-07T15:38:58.829Z\",\r\n            \"description\": \"User logged out\",\r\n            \"createdAt\": \"2024-11-07T15:38:58.829Z\",\r\n            \"updatedAt\": \"2024-11-07T15:38:58.829Z\"\r\n        },\r\n        {\r\n            \"id\": 40,\r\n            \"username\": \"Operator\",\r\n            \"role\": \"Operator\",\r\n            \"date\": \"2024-11-07T15:38:46.267Z\",\r\n            \"description\": \"Mengupdate Bahan Baku dari Ayam Kuning ke Ayamms\",\r\n            \"createdAt\": \"2024-11-07T15:38:46.267Z\",\r\n            \"updatedAt\": \"2024-11-07T15:38:46.267Z\"\r\n        },\r\n        {\r\n            \"id\": 39,\r\n            \"username\": \"Operator\",\r\n            \"role\": \"Operator\",\r\n            \"date\": \"2024-11-07T15:38:28.767Z\",\r\n            \"description\": \"Menambahkan Bahan Baku: Garam\",\r\n            \"createdAt\": \"2024-11-07T15:38:28.767Z\",\r\n            \"updatedAt\": \"2024-11-07T15:38:28.767Z\"\r\n        },\r\n        {\r\n            \"id\": 38,\r\n            \"username\": \"Operator\",\r\n            \"role\": \"Operator\",\r\n            \"date\": \"2024-11-07T15:38:15.488Z\",\r\n            \"description\": \"User logged in\",\r\n            \"createdAt\": \"2024-11-07T15:38:15.488Z\",\r\n            \"updatedAt\": \"2024-11-07T15:38:15.488Z\"\r\n        },\r\n        {\r\n            \"id\": 37,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-07T15:38:11.305Z\",\r\n            \"description\": \"User logged out\",\r\n            \"createdAt\": \"2024-11-07T15:38:11.305Z\",\r\n            \"updatedAt\": \"2024-11-07T15:38:11.305Z\"\r\n        },\r\n        {\r\n            \"id\": 36,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-07T15:38:04.186Z\",\r\n            \"description\": \"User logged in\",\r\n            \"createdAt\": \"2024-11-07T15:38:04.187Z\",\r\n            \"updatedAt\": \"2024-11-07T15:38:04.187Z\"\r\n        },\r\n        {\r\n            \"id\": 35,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-07T15:37:40.924Z\",\r\n            \"description\": \"User logged out\",\r\n            \"createdAt\": \"2024-11-07T15:37:40.925Z\",\r\n            \"updatedAt\": \"2024-11-07T15:37:40.925Z\"\r\n        },\r\n        {\r\n            \"id\": 34,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-07T15:37:12.969Z\",\r\n            \"description\": \"User logged in\",\r\n            \"createdAt\": \"2024-11-07T15:37:12.969Z\",\r\n            \"updatedAt\": \"2024-11-07T15:37:12.969Z\"\r\n        },\r\n        {\r\n            \"id\": 33,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-07T15:08:19.243Z\",\r\n            \"description\": \"User logged in\",\r\n            \"createdAt\": \"2024-11-07T15:08:19.243Z\",\r\n            \"updatedAt\": \"2024-11-07T15:08:19.243Z\"\r\n        },\r\n        {\r\n            \"id\": 32,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-07T15:05:54.564Z\",\r\n            \"description\": \"User logged out\",\r\n            \"createdAt\": \"2024-11-07T15:05:54.564Z\",\r\n            \"updatedAt\": \"2024-11-07T15:05:54.564Z\"\r\n        },\r\n        {\r\n            \"id\": 31,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-07T14:55:21.409Z\",\r\n            \"description\": \"User logged in\",\r\n            \"createdAt\": \"2024-11-07T14:55:21.409Z\",\r\n            \"updatedAt\": \"2024-11-07T14:55:21.409Z\"\r\n        },\r\n        {\r\n            \"id\": 30,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-07T14:55:06.713Z\",\r\n            \"description\": \"User logged out\",\r\n            \"createdAt\": \"2024-11-07T14:55:06.713Z\",\r\n            \"updatedAt\": \"2024-11-07T14:55:06.713Z\"\r\n        },\r\n        {\r\n            \"id\": 29,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-07T14:54:20.525Z\",\r\n            \"description\": \"User logged in\",\r\n            \"createdAt\": \"2024-11-07T14:54:20.526Z\",\r\n            \"updatedAt\": \"2024-11-07T14:54:20.526Z\"\r\n        },\r\n        {\r\n            \"id\": 28,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-07T14:47:35.371Z\",\r\n            \"description\": \"User logged in\",\r\n            \"createdAt\": \"2024-11-07T14:47:35.371Z\",\r\n            \"updatedAt\": \"2024-11-07T14:47:35.371Z\"\r\n        },\r\n        {\r\n            \"id\": 27,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-07T14:44:31.651Z\",\r\n            \"description\": \"User logged out\",\r\n            \"createdAt\": \"2024-11-07T14:44:31.651Z\",\r\n            \"updatedAt\": \"2024-11-07T14:44:31.651Z\"\r\n        },\r\n        {\r\n            \"id\": 26,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-07T14:44:27.077Z\",\r\n            \"description\": \"User logged in\",\r\n            \"createdAt\": \"2024-11-07T14:44:27.077Z\",\r\n            \"updatedAt\": \"2024-11-07T14:44:27.077Z\"\r\n        },\r\n        {\r\n            \"id\": 25,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-07T14:44:17.486Z\",\r\n            \"description\": \"User logged out\",\r\n            \"createdAt\": \"2024-11-07T14:44:17.486Z\",\r\n            \"updatedAt\": \"2024-11-07T14:44:17.486Z\"\r\n        },\r\n        {\r\n            \"id\": 24,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-07T14:43:39.678Z\",\r\n            \"description\": \"User logged out\",\r\n            \"createdAt\": \"2024-11-07T14:43:39.679Z\",\r\n            \"updatedAt\": \"2024-11-07T14:43:39.679Z\"\r\n        },\r\n        {\r\n            \"id\": 23,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-07T14:43:03.212Z\",\r\n            \"description\": \"User logged in\",\r\n            \"createdAt\": \"2024-11-07T14:43:03.212Z\",\r\n            \"updatedAt\": \"2024-11-07T14:43:03.212Z\"\r\n        },\r\n        {\r\n            \"id\": 22,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-07T14:35:37.249Z\",\r\n            \"description\": \"Menambahkan Bahan Baku: Ayam Pangganggs\",\r\n            \"createdAt\": \"2024-11-07T14:35:37.249Z\",\r\n            \"updatedAt\": \"2024-11-07T14:35:37.249Z\"\r\n        },\r\n        {\r\n            \"id\": 21,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-07T14:33:15.114Z\",\r\n            \"description\": \"Menambahkan Bahan Baku: Ais\",\r\n            \"createdAt\": \"2024-11-07T14:33:15.114Z\",\r\n            \"updatedAt\": \"2024-11-07T14:33:15.114Z\"\r\n        },\r\n        {\r\n            \"id\": 20,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-07T14:32:57.369Z\",\r\n            \"description\": \"Menambahkan Bahan Baku: Sasasassss\",\r\n            \"createdAt\": \"2024-11-07T14:32:57.369Z\",\r\n            \"updatedAt\": \"2024-11-07T14:32:57.369Z\"\r\n        },\r\n        {\r\n            \"id\": 19,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-07T14:30:57.582Z\",\r\n            \"description\": \"Menambahkan Bahan Baku: Telur\",\r\n            \"createdAt\": \"2024-11-07T14:30:57.582Z\",\r\n            \"updatedAt\": \"2024-11-07T14:30:57.582Z\"\r\n        },\r\n        {\r\n            \"id\": 18,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-07T14:29:51.008Z\",\r\n            \"description\": \"Menghapus Bahan Baku: Ayamm1\",\r\n            \"createdAt\": \"2024-11-07T14:29:51.008Z\",\r\n            \"updatedAt\": \"2024-11-07T14:29:51.008Z\"\r\n        },\r\n        {\r\n            \"id\": 17,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-07T14:26:41.618Z\",\r\n            \"description\": \"Menghapus Produk: kucing123\",\r\n            \"createdAt\": \"2024-11-07T14:26:41.618Z\",\r\n            \"updatedAt\": \"2024-11-07T14:26:41.618Z\"\r\n        },\r\n        {\r\n            \"id\": 16,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-07T14:26:35.013Z\",\r\n            \"description\": \"Menambahkan Produk: kucing123\",\r\n            \"createdAt\": \"2024-11-07T14:26:35.013Z\",\r\n            \"updatedAt\": \"2024-11-07T14:26:35.013Z\"\r\n        },\r\n        {\r\n            \"id\": 15,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-07T14:25:49.595Z\",\r\n            \"description\": \"Mengupdate Produk dari Ayam123123123 ke Ayam123123123\",\r\n            \"createdAt\": \"2024-11-07T14:25:49.595Z\",\r\n            \"updatedAt\": \"2024-11-07T14:25:49.595Z\"\r\n        },\r\n        {\r\n            \"id\": 14,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-07T14:25:39.911Z\",\r\n            \"description\": \"Menghapus Produk: Aadas\",\r\n            \"createdAt\": \"2024-11-07T14:25:39.911Z\",\r\n            \"updatedAt\": \"2024-11-07T14:25:39.911Z\"\r\n        },\r\n        {\r\n            \"id\": 13,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-07T14:22:43.248Z\",\r\n            \"description\": \"Mengupdate Bahan Baku dari Garam ke Garam\",\r\n            \"createdAt\": \"2024-11-07T14:22:43.248Z\",\r\n            \"updatedAt\": \"2024-11-07T14:22:43.248Z\"\r\n        },\r\n        {\r\n            \"id\": 12,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-07T14:22:29.916Z\",\r\n            \"description\": \"Menghapus Bahan Baku: Garam\",\r\n            \"createdAt\": \"2024-11-07T14:22:29.916Z\",\r\n            \"updatedAt\": \"2024-11-07T14:22:29.916Z\"\r\n        },\r\n        {\r\n            \"id\": 11,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-07T14:18:51.309Z\",\r\n            \"description\": \"Menambahkan Bahan Baku: Ayam Panggangggggggggggggggggggggggggggggggggg\",\r\n            \"createdAt\": \"2024-11-07T14:18:51.309Z\",\r\n            \"updatedAt\": \"2024-11-07T14:18:51.309Z\"\r\n        },\r\n        {\r\n            \"id\": 10,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-07T14:15:13.791Z\",\r\n            \"description\": \"Menambahkan Bahan Baku: Ayam Pangganggggggg\",\r\n            \"createdAt\": \"2024-11-07T14:15:13.791Z\",\r\n            \"updatedAt\": \"2024-11-07T14:15:13.791Z\"\r\n        },\r\n        {\r\n            \"id\": 9,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-07T13:40:45.024Z\",\r\n            \"description\": \"Menambahkan Bahan Baku: Telur\",\r\n            \"createdAt\": \"2024-11-07T13:40:45.024Z\",\r\n            \"updatedAt\": \"2024-11-07T13:40:45.024Z\"\r\n        },\r\n        {\r\n            \"id\": 8,\r\n            \"username\": \"AdminSPU12345\",\r\n            \"role\": \"Admin\",\r\n            \"date\": \"2024-11-07T13:16:50.005Z\",\r\n            \"description\": \"Menambahkan Bahan Baku: Singkong\",\r\n            \"createdAt\": \"2024-11-07T13:16:50.005Z\",\r\n            \"updatedAt\": \"2024-11-07T13:16:50.005Z\"\r\n        }\r\n    ]\r\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "StatusProduk",
+      "item": [
+        {
+          "name": "Status Produksi",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/statusproduksi",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "statusproduksi"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Status Produksi by Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/statusproduksi/1",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "statusproduksi",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Status Produksi",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"KodeProduksi\": \"TEL2503-1\",\r\n  \"TanggalProduksi\": \"2025-03-15\",\r\n  \"TanggalSelesai\": \"2025-05-15\",\r\n  \"Batch\": \"1\",\r\n  \"Satuan\": \"Gram\",\r\n  \"JumlahProduksi\": \"200\",\r\n  \"StatusProduksi\": \"Dalam Proses\"\r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/statusproduksi",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "statusproduksi"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Status Produksi by Id",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"KodeProduksi\": \"BER2503-1\",\r\n  \"TanggalProduksi\": \"2025-03-15\",\r\n  \"TanggalSelesai\": \"2025-03-16\",\r\n  \"NamaProduk\": \"Telur Goreng (Updated)\",\r\n  \"Batch\": \"1\",\r\n  \"Satuan\": \"Butir\",\r\n  \"JumlahProduksi\": \"300\",\r\n  \"StatusProduksi\": \"Selesai\"\r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/statusproduksi/31",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "statusproduksi",
+                "31"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Status Produksi",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/statusproduksi/1",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "statusproduksi",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "PenjualanProduk",
+      "item": [
+        {
+          "name": "Create Penjualan Produk",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"NamaProduk\": \"Ayam Fillet\",\r\n  \"Batch\": \"1\",\r\n  \"Margin\": \"30%\",\r\n  \"Terjual\": \"20\" \r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/PenjualanProduk",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "PenjualanProduk"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Penjualan Produk",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/PenjualanProduk",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "PenjualanProduk"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Penjualan Produk by Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/PenjualanProduk",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "PenjualanProduk"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "BahanBaku",
+      "value": "",
+      "type": "default"
+    },
+    {
+      "key": "Harga",
+      "value": "",
+      "type": "default"
+    },
+    {
+      "key": "Satuan",
+      "value": "",
+      "type": "default"
+    }
+  ]
+}

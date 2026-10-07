@@ -1,11 +1,11 @@
-// routes/RiwayatRoute.js
-
 const express = require("express");
 const { getAllRiwayat } = require("../controllers/Riwayat.js");
+const sessionChecker = require("../middleware/sessionChecker.js");
 
 const router = express.Router();
 
-// Mendefinisikan route untuk mendapatkan semua data Riwayat Log
+router.use(sessionChecker);
+
 router.get("/riwayat", getAllRiwayat);
 
 module.exports = router;

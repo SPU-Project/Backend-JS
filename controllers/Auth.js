@@ -4,46 +4,59 @@ const RiwayatLog = require("../models/RiwayatLog.js");
 
 const Login = async (req, res) => {
   try {
-    // Find the user by email
-    const user = await Admin.findOne({
-      where: {
-        email: req.body.email,
-      },
-    });
-
-    // If user not found, send 404 response
-    if (!user) return res.status(404).json({ msg: "User not found" });
-
-    // Verify the password
-    const match = await argon2.verify(user.password, req.body.password);
-
-    // If password does not match, send 400 response
-    if (!match) return res.status(400).json({ msg: "Wrong password" });
-
-    // Set the session userId
-    req.session.userId = user.id;
-    console.log("Session User ID:", req.session.userId);
-
-    // Create a log entry in RiwayatLog
-    try {
-      await RiwayatLog.create({
-        username: user.username,
-        role: user.role,
-        description: "User logged in",
-      });
-    } catch (error) {
-      console.error("Error creating log entry:", error);
-      // You can choose to handle this error or proceed
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({ msg: "Email dan password wajib diisi" });
     }
 
-    // Send success response with user data
-    const uuid = user.uuid;
-    const email = user.email;
-    const username = user.username;
-    const role = user.role;
-    res.status(200).json({ msg: "Login success", uuid, email, username, role });
+    const user = await Admin.findOne({
+      where: { email },
+    });
+
+    if (!user) {
+      return res.status(401).json({ msg: "Email atau password salah" });
+    }
+
+    const match = await argon2.verify(user.password, password);
+    if (!match) {
+      return res.status(401).json({ msg: "Email atau password salah" });
+    }
+
+    const setSessionAndRespond = async () => {
+      req.session.userId = user.id;
+
+      try {
+        await RiwayatLog.create({
+          username: user.username,
+          role: user.role,
+          description: "User logged in",
+        });
+      } catch (logErr) {
+        console.error("Error creating log entry:", logErr.message);
+      }
+
+      res.status(200).json({
+        msg: "Login success",
+        id: user.id,
+        uuid: user.uuid,
+        email: user.email,
+        username: user.username,
+        role: user.role,
+      });
+    };
+
+    if (typeof req.session.regenerate === "function") {
+      req.session.regenerate((err) => {
+        if (err) {
+          return res.status(500).json({ msg: "Gagal menginisialisasi sesi login", error: err.message });
+        }
+        setSessionAndRespond();
+      });
+    } else {
+      await setSessionAndRespond();
+    }
   } catch (error) {
-    console.error("Login error:", error);
+    console.error("Login error:", error.message);
     res.status(500).json({ msg: "Internal server error" });
   }
 };

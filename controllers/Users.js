@@ -38,6 +38,18 @@ const getUserById = async (req, res) => {
 const createUser = async (req, res) => {
   const { email, password, confPassword, username, role } = req.body;
 
+  // First-run bootstrap check: jika sudah ada user di sistem, pembuat harus login sebagai superadmin
+  const userCount = await Admin.count();
+  if (userCount > 0) {
+    if (!req.session || !req.session.userId) {
+      return res.status(401).json({ msg: "Akses ditolak: Silakan login sebagai superadmin untuk membuat user baru." });
+    }
+    const currentUser = await Admin.findByPk(req.session.userId);
+    if (!currentUser || currentUser.role !== "superadmin") {
+      return res.status(403).json({ msg: "Akses ditolak: Hanya superadmin yang dapat membuat user baru." });
+    }
+  }
+
   if (password !== confPassword) {
     return res
       .status(400)
@@ -67,7 +79,7 @@ const createUser = async (req, res) => {
       email: email,
       password: hashPassword,
       username: username,
-      role: role,
+      role: role || "staff",
     });
 
     // Exclude password and other sensitive fields
@@ -82,13 +94,6 @@ const createUser = async (req, res) => {
     res.status(201).json({
       msg: "Registration successful",
       data: {
-        id,
-        uuid,
-        email: userEmail,
-        username: userUsername,
-        role: userRole,
-      },
-      user: {
         id,
         uuid,
         email: userEmail,
@@ -114,11 +119,6 @@ const updateUser = async (req, res) => {
     if (!user) return res.status(404).json({ msg: "User not found" });
 
     const { email, password, confPassword, username, role } = req.body;
-
-    // Log for debugging
-    console.log("Request Body:", req.body);
-    console.log("Password:", password);
-    console.log("ConfPassword:", confPassword);
 
     // Check if username is new and unique
     if (username && username !== user.username) {
