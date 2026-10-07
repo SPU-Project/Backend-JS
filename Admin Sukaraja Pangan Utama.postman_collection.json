@@ -410,6 +410,186 @@
       ]
     },
     {
+      "name": "Master Data POS & Multi-Store (Sprint 3)",
+      "description": "Manajemen Multi-Store (HQ & Outlet), Profil Petani CRM dengan Plafon Tempo, Penetapan Harga Cabang, dan Mutasi Surat Jalan Transfer Stok FEFO.",
+      "item": [
+        {
+          "name": "1. Buat Cabang Baru (Store / Outlet)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"storeCode\": \"STORE-BGR-01\",\n  \"name\": \"Gerai Agro SPU Sentra Bogor\",\n  \"type\": \"outlet\",\n  \"address\": \"Jl. Raya Pertanian No. 45, Dramaga\",\n  \"city\": \"Bogor\"\n}"
+            },
+            "url": {
+              "raw": "{{url}}/api/v1/stores",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "stores"
+              ]
+            },
+            "description": "Mendaftarkan gerai outlet fisik di daerah sentra tani."
+          }
+        },
+        {
+          "name": "2. Daftar Seluruh Cabang",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/api/v1/stores",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "stores"
+              ]
+            },
+            "description": "Menampilkan daftar seluruh gudang pusat dan gerai retail aktif."
+          }
+        },
+        {
+          "name": "3. Registrasi Petani / Mitra (CRM)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Pak Haji Subur\",\n  \"nik\": \"3201123456780001\",\n  \"phone\": \"081234567890\",\n  \"type\": \"farmer\",\n  \"poktanName\": \"Kelompok Tani Makmur Sejahtera\",\n  \"creditLimit\": 5000000\n}"
+            },
+            "url": {
+              "raw": "{{url}}/api/v1/customers",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "customers"
+              ]
+            },
+            "description": "Mendaftarkan profil petani mitra lengkap dengan NIK, Poktan, dan plafon kasbon/yarnen (credit limit)."
+          }
+        },
+        {
+          "name": "4. Detail Petani & Sisa Plafon Tempo",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/api/v1/customers/1",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "customers",
+                "1"
+              ]
+            },
+            "description": "Mengecek profil petani, total piutang berjalan, dan sisa plafon kasbon yang masih dapat digunakan."
+          }
+        },
+        {
+          "name": "5. Atur Harga Jual per Cabang",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"storeId\": 2,\n  \"productId\": 1,\n  \"sellingPrice\": 38000\n}"
+            },
+            "url": {
+              "raw": "{{url}}/api/v1/stores/prices",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "stores",
+                "prices"
+              ]
+            },
+            "description": "Menyesuaikan harga jual di outlet tertentu dengan memperhitungkan biaya logistik antarpulau/wilayah."
+          }
+        },
+        {
+          "name": "6. Surat Jalan Transfer Stok FEFO (Gudang -> Outlet)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fromStoreId\": 1,\n  \"toStoreId\": 2,\n  \"items\": [\n    {\n      \"productId\": 1,\n      \"qty\": 25\n    }\n  ],\n  \"notes\": \"Distribusi stok persiapan musim tanam\"\n}"
+            },
+            "url": {
+              "raw": "{{url}}/api/v1/stores/transfers",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "stores",
+                "transfers"
+              ]
+            },
+            "description": "Memindahkan stok dari gudang pusat ke cabang secara otomatis memotong batch tertua lebih dulu (FEFO), menjaga integritas nomor lot dan expired date di outlet tujuan."
+          }
+        },
+        {
+          "name": "7. Monitoring Stok Outlet & Peringatan Kedaluwarsa",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/api/v1/stores/2/stocks",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "stores",
+                "2",
+                "stocks"
+              ]
+            },
+            "description": "Melihat posisi stok di cabang per batch beserta alert nearExpiry (<= 30 hari) dan belowMinStock."
+          }
+        }
+      ]
+    },
+    {
       "name": "User CRUD",
       "item": [
         {
