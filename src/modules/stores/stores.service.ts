@@ -403,8 +403,8 @@ export class StoreService {
           transferredItems.push({
             productId: item.productId,
             batchId: stockRecord.batch_id,
-            batchNumber: stockRecord.batch?.batch_number,
-            expiryDate: stockRecord.batch?.expiry_date,
+            batchNumber: (stockRecord as any).batch?.batch_number,
+            expiryDate: (stockRecord as any).batch?.expiry_date,
             qty: allocatedQty,
           });
 

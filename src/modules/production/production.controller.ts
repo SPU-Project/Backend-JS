@@ -24,7 +24,7 @@ export class ProductionController {
    * PUT /api/v1/production/recipes/:id
    */
   static updateRecipe = asyncHandler(async (req: Request, res: Response) => {
-    const id = parseInt(req.params.id, 10);
+    const id = parseInt(String(req.params.id), 10);
     const validated = updateRecipeSchema.parse(req.body);
     const userId = (req as any).user?.id;
     const result = await ProductionService.updateRecipe(id, validated, userId);
@@ -35,7 +35,7 @@ export class ProductionController {
    * GET /api/v1/production/recipes/:id
    */
   static getRecipe = asyncHandler(async (req: Request, res: Response) => {
-    const id = parseInt(req.params.id, 10);
+    const id = parseInt(String(req.params.id), 10);
     const result = await ProductionService.getRecipeById(id);
     return sendSuccess(res, result, 200);
   });
@@ -62,7 +62,7 @@ export class ProductionController {
    * POST /api/v1/production/orders/:id/complete
    */
   static completeOrder = asyncHandler(async (req: Request, res: Response) => {
-    const id = parseInt(req.params.id, 10);
+    const id = parseInt(String(req.params.id), 10);
     const validated = completeProductionOrderSchema.parse(req.body);
     const userId = (req as any).user?.id;
     const result = await ProductionService.completeProductionOrder(id, validated, userId);
@@ -73,7 +73,7 @@ export class ProductionController {
    * POST /api/v1/production/orders/:id/cancel
    */
   static cancelOrder = asyncHandler(async (req: Request, res: Response) => {
-    const id = parseInt(req.params.id, 10);
+    const id = parseInt(String(req.params.id), 10);
     const { notes } = req.body || {};
     const userId = (req as any).user?.id;
     const order = await ProductionService.cancelProductionOrder(id, notes, userId);

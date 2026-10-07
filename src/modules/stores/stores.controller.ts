@@ -34,13 +34,13 @@ export class StoreController {
   });
 
   static getCustomer = asyncHandler(async (req: Request, res: Response) => {
-    const id = parseInt(req.params.id, 10);
+    const id = parseInt(String(req.params.id), 10);
     const result = await StoreService.getCustomerById(id);
     return sendSuccess(res, result, 200);
   });
 
   static updateCreditLimit = asyncHandler(async (req: Request, res: Response) => {
-    const id = parseInt(req.params.id, 10);
+    const id = parseInt(String(req.params.id), 10);
     const { creditLimit } = updateCreditLimitSchema.parse(req.body);
     const updated = await StoreService.updateCreditLimit(id, creditLimit);
     return sendSuccess(res, updated, 200);
@@ -57,7 +57,7 @@ export class StoreController {
   });
 
   static getStocks = asyncHandler(async (req: Request, res: Response) => {
-    const storeId = parseInt(req.params.storeId, 10);
+    const storeId = parseInt(String(req.params.storeId), 10);
     const productId = req.query.productId ? parseInt(req.query.productId as string, 10) : undefined;
     const stocks = await StoreService.getStoreStocks(storeId, productId);
     return sendSuccess(res, stocks, 200);
@@ -71,8 +71,8 @@ export class StoreController {
   });
 
   static getPrice = asyncHandler(async (req: Request, res: Response) => {
-    const storeId = parseInt(req.params.storeId, 10);
-    const productId = parseInt(req.params.productId, 10);
+    const storeId = parseInt(String(req.params.storeId), 10);
+    const productId = parseInt(String(req.params.productId), 10);
     const result = await StoreService.getProductPrice(storeId, productId);
     return sendSuccess(res, result, 200);
   });

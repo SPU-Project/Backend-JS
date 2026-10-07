@@ -14,13 +14,13 @@ export class ReceivablesController {
   });
 
   static getById = asyncHandler(async (req: Request, res: Response) => {
-    const id = parseInt(req.params.id, 10);
+    const id = parseInt(String(req.params.id), 10);
     const result = await ReceivablesService.getReceivableById(id);
     return sendSuccess(res, result, 200);
   });
 
   static pay = asyncHandler(async (req: Request, res: Response) => {
-    const id = parseInt(req.params.id, 10);
+    const id = parseInt(String(req.params.id), 10);
     const validated = payReceivableSchema.parse(req.body);
     const userId = (req as any).user?.id;
 

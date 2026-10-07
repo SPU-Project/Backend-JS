@@ -61,7 +61,7 @@ export class PosService {
       }
     }
 
-    return await withTransaction(async (t) => {
+    const result = await withTransaction(async (t) => {
       // 2. Validate Store
       const store = await Store.findByPk(payload.storeId, { transaction: t });
       if (!store || !store.is_active) {

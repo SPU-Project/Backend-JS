@@ -67,7 +67,9 @@ export class ReceivablesService {
     payload: { amount: number; method: "cash" | "transfer" | "qris"; notes?: string },
     userId?: number
   ) {
-    return await withTransaction(async (t) => {
+    let customerIdToInvalidate: number | null = null;
+
+    const result = await withTransaction(async (t) => {
       // 1. Lock Receivable without outer join
       const receivable = await Receivable.findByPk(id, {
         lock: t.LOCK.UPDATE,
@@ -77,6 +79,8 @@ export class ReceivablesService {
       if (!receivable) {
         throw AppError.notFound(`Tagihan piutang #${id} tidak ditemukan.`);
       }
+
+      customerIdToInvalidate = receivable.customer_id;
 
       if (receivable.status === "paid") {
         throw AppError.conflict("Tagihan piutang ini sudah lunas sepenuhnya.");
@@ -152,7 +156,9 @@ export class ReceivablesService {
     });
 
     // Invalidate cached customer profile
-    await cacheService.del(`customer:${receivable.customer_id}`);
+    if (customerIdToInvalidate) {
+      await cacheService.del(`customer:${customerIdToInvalidate}`);
+    }
 
     return result;
   }

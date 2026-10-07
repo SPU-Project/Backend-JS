@@ -2,7 +2,6 @@
   "compilerOptions": {
     "target": "ES2022",
     "module": "CommonJS",
-    "moduleResolution": "node",
     "lib": ["ES2022"],
     "allowJs": true,
     "checkJs": false,
@@ -12,8 +11,7 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "outDir": "./dist",
-    "baseUrl": "."
+    "outDir": "./dist"
   },
   "include": ["src/**/*", "config/**/*", "middleware/**/*", "models/**/*", "routes/**/*", "controllers/**/*"],
   "exclude": ["node_modules", "dist"]

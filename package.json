@@ -11,6 +11,8 @@
     "db:migrate:test": "cross-env NODE_ENV=test tsx src/shared/db/migrator.ts up",
     "db:rollback:test": "cross-env NODE_ENV=test tsx src/shared/db/migrator.ts down",
     "db:seed:test": "cross-env NODE_ENV=test tsx src/shared/db/migrator.ts seed",
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
     "test": "cross-env NODE_ENV=test vitest run",
     "test:watch": "cross-env NODE_ENV=test vitest"
   },

@@ -21,7 +21,7 @@ export class PosController {
    * GET /api/v1/pos/transactions/:identifier
    */
   static getTransaction = asyncHandler(async (req: Request, res: Response) => {
-    const identifier = req.params.identifier;
+    const identifier = String(req.params.identifier);
     const isNum = /^\d+$/.test(identifier);
     const result = await PosService.getTransaction(isNum ? parseInt(identifier, 10) : identifier);
     return sendSuccess(res, result, 200);

@@ -17,7 +17,7 @@ export const posCheckoutSchema = z
       .array(
         z.object({
           method: z.enum(["cash", "qris", "transfer", "tempo"], {
-            errorMap: () => ({ message: "Metode pembayaran harus cash, qris, transfer, atau tempo" }),
+            message: "Metode pembayaran harus cash, qris, transfer, atau tempo",
           }),
           amount: z.coerce.number().positive("Nominal pembayaran harus lebih dari 0"),
           referenceNumber: z.string().trim().optional(),
