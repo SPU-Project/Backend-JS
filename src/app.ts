@@ -111,6 +111,10 @@ app.use(StokBahanBakuRoute);
 app.use(StatusProduk);
 app.use(PenjualanProduk);
 
+// Modular API v1 Routes
+import { productionRouter } from "./modules/production/production.routes";
+app.use("/api/v1/production", productionRouter);
+
 // 404 Handler
 app.use((req: Request, res: Response, next) => {
   next(AppError.notFound(`Route ${req.method} ${req.url} tidak ditemukan.`));
